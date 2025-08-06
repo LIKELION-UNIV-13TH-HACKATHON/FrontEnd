@@ -1,5 +1,5 @@
 import { getProfile, login } from "@react-native-seoul/kakao-login";
-import { Alert, Button } from "react-native";
+import { Alert, Image, Pressable } from "react-native";
 
 const KakaoLoginButton = () => {
   const handleLogin = async () => {
@@ -15,7 +15,11 @@ const KakaoLoginButton = () => {
     }
   };
 
-  return <Button title="카카오 로그인 테스트" onPress={handleLogin} />;
+  return (
+    <Pressable onPress={handleLogin}>
+      <Image source={require("../assets/images/kakao_login.png")} />
+    </Pressable>
+  );
 };
 
 export default KakaoLoginButton;
