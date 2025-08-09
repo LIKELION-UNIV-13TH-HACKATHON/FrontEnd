@@ -1,6 +1,7 @@
 import { View, Image, Button } from "react-native";
 import React, { useEffect } from "react";
 import { useRouter } from "expo-router";
+import SplashIcon from "../../assets/images/mainicon_white.svg";
 
 const SplashScreen = () => {
   const router = useRouter();
@@ -15,7 +16,7 @@ const SplashScreen = () => {
 
   return (
     <View className="flex-1 justify-center items-center bg-main">
-      <Image source={require("../../assets/images/mainicon.png")} />
+      <SplashIcon />
     </View>
   );
 };
