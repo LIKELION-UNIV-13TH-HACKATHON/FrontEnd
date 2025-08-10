@@ -3,7 +3,7 @@ import React from "react";
 import BottomTaps from "@/components/shop/homepage/BottomTaps";
 import HeaderShop from "@/components/shop/homepage/HeaderShop";
 
-const papular_chart = () => {
+const PapularChart = () => {
   return (
     <View className="flex-1">
       <HeaderShop />
@@ -15,4 +15,4 @@ const papular_chart = () => {
   );
 };
 
-export default papular_chart;
+export default PapularChart;

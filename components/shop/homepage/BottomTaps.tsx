@@ -19,7 +19,11 @@ const BottomTaps = () => {
             <HomeIcon
               width={24}
               height={24}
-              fill={pathname.includes("home_shop") ? "#000000" : "#9CA3AF"}
+              fill={
+                pathname.includes("home_shop") || pathname.includes("map")
+                  ? "#000000"
+                  : "#9CA3AF"
+              }
             />
             <Text
               className={
