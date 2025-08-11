@@ -1,9 +1,9 @@
 import { View, Text, Pressable } from "react-native";
 import React from "react";
 import { useRouter, usePathname } from "expo-router";
-import HomeIcon from "../../../assets/images/homeicon.svg";
-import ChartIcon from "../../../assets/images/charticon.svg";
-import MypageIcon from "../../../assets/images/mypageicon.svg";
+import HomeIcon from "../../assets/images/homeicon.svg";
+import ChartIcon from "../../assets/images/charticon.svg";
+import MypageIcon from "../../assets/images/mypageicon.svg";
 
 const BottomTaps = () => {
   const router = useRouter();
@@ -13,21 +13,17 @@ const BottomTaps = () => {
       <View className="absolute left-0 right-0 bottom-0 bg-white border-t border-gray-200">
         <View className="flex-row items-center h-16">
           <Pressable
-            onPress={() => router.push("/(home)/home_shop")}
+            onPress={() => router.push("/(home)/(kakaomap)/map")}
             className="flex-1 items-center justify-center gap-1"
           >
             <HomeIcon
               width={24}
               height={24}
-              fill={
-                pathname.includes("home_shop") || pathname.includes("map")
-                  ? "#000000"
-                  : "#9CA3AF"
-              }
+              fill={pathname.includes("map") ? "#000000" : "#9CA3AF"}
             />
             <Text
               className={
-                pathname.includes("home_shop") ? "text-black" : "text-gray-400"
+                pathname.includes("map") ? "text-black" : "text-gray-400"
               }
             >
               홈

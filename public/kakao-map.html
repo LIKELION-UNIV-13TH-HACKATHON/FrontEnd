@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      html,
+      body,
+      #map {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .me {
+        position: relative;
+        width: 14px;
+        height: 14px;
+        border-radius: 9999px;
+        background: #2b7fff; /* 현재 위치 점 */
+        box-shadow: 0 0 0 2px #fff; /* 흰색 테두리로 가독성 */
+      }
+      .me::after {
+        content: "";
+        position: absolute;
+        inset: -10px;
+        border: 2px solid rgba(43, 127, 255, 0.35);
+        border-radius: 9999px;
+        animation: pulse 1.8s ease-out infinite;
+      }
+      @keyframes pulse {
+        0% {
+          transform: scale(0.5);
+          opacity: 0.8;
+        }
+        100% {
+          transform: scale(1.6);
+          opacity: 0;
+        }
+      }
+      .heading {
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        width: 0;
+        height: 0;
+        transform: translateX(-50%);
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-bottom: 8px solid #2b7fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      const qs = new URLSearchParams(location.search);
+      const appkey = qs.get("appkey");
+      const initLat = parseFloat(qs.get("lat")) || 37.5665;
+      const initLng = parseFloat(qs.get("lng")) || 126.978;
+      const mode = qs.get("mode") || "default";
+      const initLevel = Number.isFinite(parseInt(qs.get("level")))
+        ? parseInt(qs.get("level"))
+        : 3;
+
+      let map,
+        marker,
+        currentOverlay,
+        accuracyCircle,
+        storeMarkers = [],
+        storeOverlays = [];
+
+      function boot(lat, lng) {
+        const center = new kakao.maps.LatLng(lat, lng);
+        map = new kakao.maps.Map(document.getElementById("map"), {
+          center,
+          level: initLevel,
+        });
+        kakao.maps.event.addListener(map, "click", function () {
+          window.ReactNativeWebView?.postMessage(
+            JSON.stringify({ type: "mapClick" })
+          );
+        });
+        if (mode !== "current") {
+          marker = new kakao.maps.Marker({ position: center });
+          marker.setMap(map);
+        }
+        // RN에 준비 완료 신호
+        window.ReactNativeWebView?.postMessage(
+          JSON.stringify({ type: "ready" })
+        );
+      }
+
+      function update(lat, lng, opts = {}) {
+        if (!map) return;
+        const pos = new kakao.maps.LatLng(lat, lng);
+        if (marker) marker.setPosition(pos);
+        if (opts.center !== false) map.setCenter(pos);
+        if (typeof opts.level === "number") map.setLevel(opts.level);
+      }
+
+      function setCurrentLocation({
+        lat,
+        lng,
+        accuracy = 0,
+        headingDeg = null,
+        center = true,
+      }) {
+        if (!map) return;
+        const pos = new kakao.maps.LatLng(lat, lng);
+        if (marker) {
+          marker.setMap(null);
+          marker = null;
+        }
+
+        // 현재 위치 커스텀 오버레이 (파란 점 + 파동)
+        const html = `
+          <div class="me">
+            ${headingDeg != null ? '<i class="heading"></i>' : ""}
+          </div>`;
+
+        if (!currentOverlay) {
+          currentOverlay = new kakao.maps.CustomOverlay({
+            position: pos,
+            content: html,
+            yAnchor: 0.5,
+            xAnchor: 0.5,
+            zIndex: 10,
+          });
+          currentOverlay.setMap(map);
+        } else {
+          currentOverlay.setPosition(pos);
+          currentOverlay.setContent(html);
+        }
+
+        // 방향 화살표 회전 처리
+        if (headingDeg != null) {
+          const el = currentOverlay.getContent().querySelector(".heading");
+          if (el)
+            el.style.transform = `translateX(-50%) rotate(${headingDeg}deg)`;
+        }
+
+        // 정확도 원
+        if (!accuracyCircle) {
+          accuracyCircle = new kakao.maps.Circle({
+            center: pos,
+            radius: Math.max(0, accuracy),
+            strokeWeight: 1,
+            strokeColor: "#2b7fff",
+            strokeOpacity: 0.5,
+            strokeStyle: "solid",
+            fillColor: "#2b7fff",
+            fillOpacity: 0.15,
+          });
+          accuracyCircle.setMap(map);
+        } else {
+          accuracyCircle.setPosition(pos);
+          accuracyCircle.setRadius(Math.max(0, accuracy));
+        }
+
+        if (center) map.setCenter(pos);
+      }
+      function setPOIs({ items = [], fit = true, showLabels = false }) {
+        // items: [{ lat, lng, name }]
+        // 1) clear old markers/overlays
+        if (storeMarkers && storeMarkers.length) {
+          storeMarkers.forEach((m) => m.setMap(null));
+          storeMarkers = [];
+        }
+        if (storeOverlays && storeOverlays.length) {
+          storeOverlays.forEach((o) => o.setMap(null));
+          storeOverlays = [];
+        }
+        if (!map || !Array.isArray(items) || items.length === 0) return;
+
+        const bounds = new kakao.maps.LatLngBounds();
+        items.forEach(({ lat, lng, name }) => {
+          const pos = new kakao.maps.LatLng(lat, lng);
+
+          // marker
+          const m = new kakao.maps.Marker({ position: pos });
+          m.setMap(map);
+          storeMarkers.push(m);
+
+          m.addListener("click", () => {
+            window.ReactNativeWebView?.postMessage(
+              JSON.stringify({
+                type: "markerClick",
+                payload: { lat, lng, name },
+              })
+            );
+          });
+
+          bounds.extend(pos);
+        });
+
+        if (fit && !bounds.isEmpty()) {
+          map.setBounds(bounds);
+        }
+      }
+
+      // SDK 주입
+      const s = document.createElement("script");
+      s.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${appkey}&libraries=services&autoload=false`;
+      s.onload = () => {
+        kakao.maps.load(() => boot(initLat, initLng));
+      };
+      s.onerror = () => console.error("[kakao-map.html] SDK load failed");
+      document.head.appendChild(s);
+
+      // RN -> Web 메시지
+      window.addEventListener("message", (e) => {
+        try {
+          const msg = JSON.parse(e.data);
+          if (msg.type === "setCenter" && msg.lat && msg.lng) {
+            update(msg.lat, msg.lng, msg.opts || {});
+          } else if (msg.type === "setCurrent" && msg.payload) {
+            setCurrentLocation(msg.payload);
+          } else if (msg.type === "setPOIs" && msg.payload) {
+            setPOIs(msg.payload);
+          }
+        } catch (_) {}
+      });
+
+      // 디버깅 편의용 전역 노출 (선택)
+      window.__kakaoUpdate = update;
+    </script>
+  </body>
+</html>
