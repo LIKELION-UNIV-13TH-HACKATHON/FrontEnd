@@ -3,10 +3,10 @@ import { View, Text, ActivityIndicator } from "react-native";
 import * as Location from "expo-location";
 import KakaoMap from "@/components/kakaomap/KakaoMap";
 import { useCurrentLocation } from "@/hooks/useCurrentLocation";
-import HeaderShop from "@/components/shop/homepage/HeaderShop";
-import BottomTaps from "@/components/shop/homepage/BottomTaps";
+import HeaderCustomer from "@/components/customer/HeaderCustomer";
+import BottomTaps from "@/components/customer/BottomTaps";
 
-export default function Map() {
+const Map = () => {
   const { status, coords, error, request } = useCurrentLocation({
     accuracy: Location.Accuracy.Balanced,
     timeoutMs: 8000,
@@ -14,7 +14,7 @@ export default function Map() {
   });
   return (
     <View className="flex-1">
-      <HeaderShop/>
+      <HeaderCustomer />
       {status !== "ready" && !error && (
         <View className="items-center justify-center py-5">
           <ActivityIndicator />
@@ -42,7 +42,9 @@ export default function Map() {
           <KakaoMap latitude={coords.latitude} longitude={coords.longitude} />
         </View>
       )}
-      <BottomTaps/>
+      <BottomTaps />
     </View>
   );
-}
+};
+
+export default Map;

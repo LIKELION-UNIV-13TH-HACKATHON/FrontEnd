@@ -1,4 +1,3 @@
-// /app/(home)/home_shop.tsx
 import { View, ScrollView, Pressable, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
 import HeaderShop from "@/components/shop/homepage/HeaderShop";
@@ -53,7 +52,14 @@ const HomeShop = () => {
       <ScrollView contentContainerStyle={{ paddingBottom: 96 }}>
         <ShopInfo />
 
-        <Pressable onPress={() => router.push("(kakaomap)/map")}>
+        <Pressable
+          onPress={() =>
+            router.push({
+              pathname: "(kakaomap)/map",
+              params: { mode: "current" },
+            })
+          }
+        >
           {loading && !coords ? (
             <View className="h-24">
               <ActivityIndicator />
