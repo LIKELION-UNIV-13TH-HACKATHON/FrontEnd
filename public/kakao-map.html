@@ -159,7 +159,7 @@
         if (center) map.setCenter(pos);
       }
       function setPOIs({ items = [], fit = true, showLabels = false }) {
-        // items: [{ lat, lng, name }]
+        // items: [{ id, lat, lng, name, address, industry }]
         // 1) clear old markers/overlays
         if (storeMarkers && storeMarkers.length) {
           storeMarkers.forEach((m) => m.setMap(null));
@@ -172,7 +172,7 @@
         if (!map || !Array.isArray(items) || items.length === 0) return;
 
         const bounds = new kakao.maps.LatLngBounds();
-        items.forEach(({ lat, lng, name }) => {
+        items.forEach(({ id, lat, lng, name, address, industry }) => {
           const pos = new kakao.maps.LatLng(lat, lng);
 
           // marker
@@ -184,10 +184,24 @@
             window.ReactNativeWebView?.postMessage(
               JSON.stringify({
                 type: "markerClick",
-                payload: { lat, lng, name },
+                payload: { id, lat, lng, name, address, industry },
               })
             );
           });
+
+          // pretty label
+          if (showLabels && name) {
+            const html = `<div class="poi-label">${name}</div>`;
+            const overlay = new kakao.maps.CustomOverlay({
+              position: pos,
+              content: html,
+              xAnchor: 0.5,
+              yAnchor: 1.15, // place label slightly above marker
+              zIndex: 9,
+            });
+            overlay.setMap(map);
+            storeOverlays.push(overlay);
+          }
 
           bounds.extend(pos);
         });

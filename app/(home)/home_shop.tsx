@@ -55,7 +55,7 @@ const HomeShop = () => {
         <Pressable
           onPress={() =>
             router.push({
-              pathname: "(kakaomap)/map",
+              pathname: "/map",
               params: { mode: "current" },
             })
           }

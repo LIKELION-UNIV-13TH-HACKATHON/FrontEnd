@@ -10,9 +10,11 @@ import { View, StyleSheet, Animated, Easing } from "react-native";
 import { WebView } from "react-native-webview";
 import { HostDomain } from "../../util/HostDomain";
 import BottomSheet from "./BottomSheet";
+import { useShopInfoStore } from "@/store/shop/useShopInfoStore";
 
 const dummyLocations = [
   {
+    id: 1,
     name: "천운축산물도매센터 정육점",
     latitude: 36.80147,
     longitude: 127.149563,
@@ -20,6 +22,7 @@ const dummyLocations = [
     industry: "식료품",
   },
   {
+    id: 2,
     name: "솔나무떡집",
     latitude: 36.80205,
     longitude: 127.149439,
@@ -29,6 +32,7 @@ const dummyLocations = [
 ];
 
 type MarkerPayload = {
+  id?: number;
   name?: string;
   lat?: number;
   lng?: number;
@@ -42,6 +46,10 @@ type Props = {
 };
 
 const KakaoMap: React.FC<Props> = ({ latitude, longitude, onMarkerClick }) => {
+  const { shops, setShop } = useShopInfoStore();
+  useEffect(() => {
+    setShop(dummyLocations);
+  }, []);
   const key = process.env.EXPO_PUBLIC_KAKAO_JAVASCRIPT_KEY!;
   const host = HostDomain;
   const uri = useMemo(() => {
@@ -128,10 +136,13 @@ const KakaoMap: React.FC<Props> = ({ latitude, longitude, onMarkerClick }) => {
       JSON.stringify({
         type: "setPOIs",
         payload: {
-          items: dummyLocations.map((d) => ({
+          items: shops.map((d) => ({
+            id: d.id,
             lat: d.latitude,
             lng: d.longitude,
             name: d.name,
+            address: d.address,
+            industry: d.industry,
           })),
           fit: false,
           showLabels: false,
@@ -160,9 +171,12 @@ const KakaoMap: React.FC<Props> = ({ latitude, longitude, onMarkerClick }) => {
             if (data?.type === "ready") setIsReady(true);
             else if (data?.type === "markerClick") {
               const payload: MarkerPayload = {
+                id: data?.payload?.id,
                 name: data?.payload?.name,
                 lat: data?.payload?.lat,
                 lng: data?.payload?.lng,
+                address: data?.payload?.address,
+                industry: data?.payload?.industry,
               };
               openSheet(payload);
               onMarkerClick?.(payload);

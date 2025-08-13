@@ -77,6 +77,14 @@ function RootLayoutNav() {
           name="(home)/(kakaomap)/map"
           options={{ headerShown: false, animation: "none" }}
         />
+        <Stack.Screen
+          name="(home)/shopdetail/[id]/main"
+          options={{ headerShown: false, animation: "none" }}
+        />
+        <Stack.Screen
+          name="(home)/shopdetail/[id]/writequestion"
+          options={{ headerShown: false, animation: "none" }}
+        />
       </Stack>
     </SafeAreaView>
   );

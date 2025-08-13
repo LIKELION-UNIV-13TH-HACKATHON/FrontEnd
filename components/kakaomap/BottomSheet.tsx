@@ -2,7 +2,10 @@ import React from "react";
 import { View, Text, Pressable, Animated } from "react-native";
 import FilledStar from "../../assets/images/filledstar.svg";
 import BannerIcon from "../../assets/images/bannericon.svg";
+import { router } from "expo-router";
+import ImageSwiper from "../customer/shopdetail/ImageSwiper";
 type MarkerPayload = {
+  id?: number;
   name?: string;
   lat?: number;
   lng?: number;
@@ -35,9 +38,19 @@ const BottomSheet: React.FC<{
           <View className="self-center w-12 h-1 rounded-full bg-gray-300 mb-2" />
           <View className="pt-2 space-y-1">
             <View className="flex-row items-center justify-between">
-              <Text className="text-xl font-semibold">
-                {data?.name ?? "상세 정보"}
-              </Text>
+              <Pressable
+                onPress={() => {
+                  if (data?.id == null) return;
+                  router.push({
+                    pathname: "/(home)/shopdetail/[id]/main",
+                    params: { id: String(data.id) },
+                  });
+                }}
+              >
+                <Text className="text-xl font-semibold">
+                  {data?.name ?? "상세 정보"}
+                </Text>
+              </Pressable>
               <FilledStar />
             </View>
 
@@ -47,10 +60,7 @@ const BottomSheet: React.FC<{
             </Text>
           </View>
           <View className="mt-4 flex-row space-x-1">
-            <View className="h-36 w-36 bg-gray-300 rounded-lg" />
-            <View className="h-36 w-36 bg-gray-300 rounded-lg" />
-
-            <View className="h-36 w-36 bg-gray-300 rounded-lg" />
+            <ImageSwiper />
           </View>
         </View>
       </Animated.View>

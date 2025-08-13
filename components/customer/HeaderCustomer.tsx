@@ -1,4 +1,4 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Pressable } from "react-native";
 import React from "react";
 import Bell from "../../assets/images/bell.svg";
 import MainIcon from "../../assets/images/mainicon_maincolor.svg";
@@ -42,6 +42,7 @@ const HeaderCustomer = () => {
       <MainIcon />
       <View className="flex-row space-x-3 items-center">
         <SearchIcon />
+
         <View className="relative">
           <Bell />
           <View className=" absolute -top-1 -right-3">
