@@ -4,6 +4,8 @@ import Bell from "../../assets/images/bell.svg";
 import MainIcon from "../../assets/images/mainicon_maincolor.svg";
 import SearchIcon from "../../assets/images/searchicon.svg";
 import Svg, { Rect, Text as SvgText } from "react-native-svg";
+import { router } from "expo-router";
+import { useUserInfoStore } from "@/store/user/useUserInfoStore";
 
 type BadgeProps = { count?: number };
 const BellStack: React.FC<BadgeProps> = ({ count = 0 }) => {
@@ -37,18 +39,29 @@ const BellStack: React.FC<BadgeProps> = ({ count = 0 }) => {
 };
 
 const HeaderCustomer = () => {
+  const { user } = useUserInfoStore();
   return (
     <View className="flex-row p-4 pr-8 justify-between">
       <MainIcon />
       <View className="flex-row space-x-3 items-center">
         <SearchIcon />
 
-        <View className="relative">
+        <Pressable
+          className="relative"
+          onPress={() =>
+            router.push({
+              pathname: "/[userid]/notification",
+              params: {
+                userid: user.id,
+              },
+            })
+          }
+        >
           <Bell />
           <View className=" absolute -top-1 -right-3">
             <BellStack count={11} />
           </View>
-        </View>
+        </Pressable>
       </View>
     </View>
   );

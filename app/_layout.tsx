@@ -70,7 +70,7 @@ function RootLayoutNav() {
           options={{ headerShown: false, animation: "none" }}
         />
         <Stack.Screen
-          name="(mypage)/mypage_shop"
+          name="[userid]/(mypage)/mypage_shop"
           options={{ headerShown: false, animation: "none" }}
         />
         <Stack.Screen
@@ -83,6 +83,10 @@ function RootLayoutNav() {
         />
         <Stack.Screen
           name="(home)/shopdetail/[id]/writequestion"
+          options={{ headerShown: false, animation: "none" }}
+        />
+        <Stack.Screen
+          name="[userid]/(notification)/notification"
           options={{ headerShown: false, animation: "none" }}
         />
       </Stack>

@@ -40,7 +40,6 @@ const WriteQuestion: React.FC = () => {
 
   const submit = () => {
     if (disabled) return;
-    // TODO: API 연동 (id, title, body)
     Alert.alert("등록 완료", "문의가 등록되었습니다.");
     router.back();
   };
@@ -51,7 +50,7 @@ const WriteQuestion: React.FC = () => {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       keyboardVerticalOffset={insets.top + 48}
     >
-      <SimpleHeader title={"문의"}/>
+      <SimpleHeader title={"문의"} />
 
       <ScrollView
         contentContainerStyle={{ paddingBottom: insets.bottom + 96 }}
