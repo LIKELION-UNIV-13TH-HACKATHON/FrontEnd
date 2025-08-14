@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
-import BottomTaps from "@/components/shop/homepage/BottomTaps";
 import HeaderShop from "@/components/shop/homepage/HeaderShop";
+import BottomTaps from "@/components/customer/BottomTaps";
 
 const PapularChart = () => {
   return (

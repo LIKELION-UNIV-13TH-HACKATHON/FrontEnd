@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, ActivityIndicator } from "react-native";
 import * as Location from "expo-location";
 import KakaoMap from "@/components/kakaomap/KakaoMap";
 import { useCurrentLocation } from "@/hooks/useCurrentLocation";
 import HeaderCustomer from "@/components/customer/HeaderCustomer";
 import BottomTaps from "@/components/customer/BottomTaps";
+import { useUserInfoStore } from "@/store/user/useUserInfoStore";
+
+const DumpyUser = {
+  name: "강대훈",
+  id: 1,
+  email: "crol0101@naver.com",
+};
 
 const Map = () => {
   const { status, coords, error, request } = useCurrentLocation({
@@ -12,6 +19,10 @@ const Map = () => {
     timeoutMs: 8000,
     useLastKnownFallback: true,
   });
+  const { setUser } = useUserInfoStore();
+  useEffect(() => {
+    setUser(DumpyUser);
+  }, []);
   return (
     <View className="flex-1">
       <HeaderCustomer />
