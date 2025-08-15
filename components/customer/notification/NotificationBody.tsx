@@ -7,8 +7,8 @@ const list = [1, 2, 3, 4, 5];
 const NotificationBody = () => {
   return (
     <ScrollView className="pt-4">
-      {list.map(() => (
-        <NotificationItem />
+      {list.map((item, index) => (
+        <NotificationItem key={index} />
       ))}
     </ScrollView>
   );
