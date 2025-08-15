@@ -1,15 +1,14 @@
 import { View, Text } from "react-native";
 import React from "react";
-import HeaderShop from "@/components/shop/homepage/HeaderShop";
 import BottomTaps from "@/components/customer/BottomTaps";
+import HeaderCustomer from "@/components/customer/HeaderCustomer";
+import ChartBody from "@/components/customer/chart/ChartBody";
 
 const PapularChart = () => {
   return (
     <View className="flex-1">
-      <HeaderShop />
-      <View className="flex-1">
-        <Text>인기 차트</Text>
-      </View>
+      <HeaderCustomer />
+      <ChartBody />
       <BottomTaps />
     </View>
   );
