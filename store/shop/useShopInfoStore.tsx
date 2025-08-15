@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type Shop = {
+export type Shop = {
   id: number;
   name: string;
   latitude: number;
