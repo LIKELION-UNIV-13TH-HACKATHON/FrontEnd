@@ -49,7 +49,7 @@ const ChartItem: React.FC<ChartItemProps> = ({
         <Pressable
           hitSlop={8}
           onPress={() => onToggleBookmark?.(id)}
-          className="ml-3"
+          className="ml-3 flex-col items-start justify-start h-full"
         >
           <Text
             className={

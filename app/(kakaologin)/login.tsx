@@ -6,7 +6,6 @@ const LoginScreen = () => {
   return (
     <View className="flex-1 justify-center items-center">
       <KakaoLoginButton />
-      <Link href={"/(home)/(kakaomap)/map"}>go main</Link>
     </View>
   );
 };

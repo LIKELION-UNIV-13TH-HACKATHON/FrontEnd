@@ -6,12 +6,7 @@ import { useCurrentLocation } from "@/hooks/useCurrentLocation";
 import HeaderCustomer from "@/components/customer/HeaderCustomer";
 import BottomTaps from "@/components/customer/BottomTaps";
 import { useUserInfoStore } from "@/store/user/useUserInfoStore";
-
-const DumpyUser = {
-  name: "강대훈",
-  id: 1,
-  email: "crol0101@naver.com",
-};
+import ServiceAgreeModal from "@/components/onboarding/customer/ServiceAgreeModal";
 
 const Map = () => {
   const { status, coords, error, request } = useCurrentLocation({
@@ -19,10 +14,9 @@ const Map = () => {
     timeoutMs: 8000,
     useLastKnownFallback: true,
   });
-  const { setUser } = useUserInfoStore();
-  useEffect(() => {
-    setUser(DumpyUser);
-  }, []);
+
+  const { user } = useUserInfoStore();
+
   return (
     <View className="flex-1">
       <HeaderCustomer />
@@ -54,6 +48,7 @@ const Map = () => {
         </View>
       )}
       <BottomTaps />
+      {user.agree === false ? <ServiceAgreeModal /> : null}
     </View>
   );
 };

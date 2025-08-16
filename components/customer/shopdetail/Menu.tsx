@@ -6,8 +6,8 @@ const list = ["바나나", "바나나", "바나나", "바나나", "바나나"];
 const Menu = () => {
   return (
     <View>
-      {list.map((item) => (
-        <View className="h-36 flex-row justify-between">
+      {list.map((item, idx) => (
+        <View key={`menu-${idx}`} className="h-36 flex-row justify-between">
           <View className=" justify-center gap-4">
             <View>
               <Text className="font-bold text-base">{item}</Text>
