@@ -89,6 +89,18 @@ function RootLayoutNav() {
           name="[userid]/(notification)/notification"
           options={{ headerShown: false, animation: "none" }}
         />
+        <Stack.Screen
+          name="[userid]/onboarding/purpose"
+          options={{ headerShown: false, animation: "none" }}
+        />
+        <Stack.Screen
+          name="[userid]/onboarding/(customer)/writename"
+          options={{ headerShown: false, animation: "none" }}
+        />
+        <Stack.Screen
+          name="[userid]/onboarding/(shop)/writeinfo"
+          options={{ headerShown: false, animation: "none" }}
+        />
       </Stack>
     </SafeAreaView>
   );
