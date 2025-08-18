@@ -8,6 +8,7 @@ const DumpyUser = {
   name: "강대훈",
   id: 1,
   email: "crol0101@naver.com",
+  shopMember: true,
 };
 
 export const handleLogin = async () => {
@@ -22,7 +23,7 @@ export const handleLogin = async () => {
 
     useUserInfoStore.getState().setUser(DumpyUser);
     if (useUserInfoStore.getState().user.shopMember) {
-      //바로 메인
+      router.push("/(home)/home_shop");
     } else if (useUserInfoStore.getState().user.customerMember) {
       router.push("/(home)/(kakaomap)/map");
     } else {

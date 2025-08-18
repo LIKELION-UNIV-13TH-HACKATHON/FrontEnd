@@ -8,7 +8,7 @@ export type ShopFormDraft = {
   phone: string;
   industry: string;
   address: string;
-  images: string[]; // uri list (upload later)
+  images: string[]; 
   hours: HoursItem[];
 };
 
