@@ -28,7 +28,7 @@ const ServiceAgreeModal: React.FC = () => {
         <View className="flex-1 bg-black/50 items-center justify-center">
           <View className="bg-white w-11/12 rounded-2xl p-6">
             <Text className="text-center text-xl font-extrabold">
-              {user.nickname + "님 환영합니다!"}
+              {user.nickname ? user.nickname : user.name + "님 환영합니다!"}
             </Text>
             <Text className="text-center text-[14px] text-[#F28715] font-semibold mt-2">
               띵동과 함께 즐거운 시간 보내세요!

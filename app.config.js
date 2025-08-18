@@ -30,6 +30,9 @@ export default ({ config }) => {
           NSAllowsArbitraryLoads: true,
           NSAllowsArbitraryLoadsInWebContent: true,
         },
+        NSPhotoLibraryUsageDescription: "프로필 사진 및 이미지 업로드를 위해 사진 보관함 접근 권한이 필요합니다.",
+        NSCameraUsageDescription: "사진 촬영을 통한 이미지 업로드를 위해 카메라 접근 권한이 필요합니다.",
+        NSPhotoLibraryAddUsageDescription: "촬영한 사진을 앨범에 저장하기 위해 쓰기 권한이 필요합니다.",
       },
     },
     web: {
@@ -44,6 +47,7 @@ export default ({ config }) => {
       "expo-build-properties",
       "@react-native-firebase/app",
       "@react-native-firebase/messaging",
+      "expo-image-picker",
     ],
     experiments: { typedRoutes: true },
     extra: {
@@ -58,6 +62,12 @@ export default ({ config }) => {
     ...(config?.android || {}),
     adaptiveIcon: { backgroundColor: "#ffffff" },
     edgeToEdgeEnabled: true,
+    permissions: [
+      "CAMERA",
+      "READ_MEDIA_IMAGES",
+      "READ_EXTERNAL_STORAGE",
+      "WRITE_EXTERNAL_STORAGE",
+    ],
     package: "com.ddingdong.frontend",
     ...(fs.existsSync(gsPath) ? { googleServicesFile: gsPath } : {}),
   };

@@ -5,14 +5,20 @@ import ShopIcon from "@/assets/images/shopicon.svg";
 import NextButton from "../NextButton";
 import { router } from "expo-router";
 import { useLocalSearchParams } from "expo-router";
+import EmptyCircle from "@/assets/images/emptyCircle.svg";
+import FilledCircle from "@/assets/images/filledCircle.svg";
 
 const PurPoseBody = () => {
   const [selected, setSelected] = useState<"판매자" | "소비자" | null>(null);
   const [active, setActive] = useState(false);
   const { userid } = useLocalSearchParams<{ userid: string }>();
   return (
-    <View className="flex-col p-4 justify-between flex-1">
+    <View className="flex-col px-4 justify-between flex-1">
       <View>
+        <View className="flex-row gap-1 mb-10">
+          <FilledCircle />
+          <EmptyCircle />
+        </View>
         <Text className="font-extrabold text-2xl w-5/12">
           어떤 목적으로 이용하시나요?
         </Text>

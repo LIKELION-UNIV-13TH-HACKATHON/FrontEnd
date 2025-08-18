@@ -1,15 +1,15 @@
 import { View, Text } from "react-native";
 import React from "react";
 import ReturnHeader from "@/components/onboarding/ReturnHeader";
-import WriteInfoBody from "@/components/onboarding/shop/WriteInfoBody";
+import FinalCheckBody from "@/components/onboarding/shop/FinalCheckBody";
 
-const writeinfo = () => {
+const FinalCheck = () => {
   return (
     <View className="flex-1">
       <ReturnHeader />
-      <WriteInfoBody />
+      <FinalCheckBody />
     </View>
   );
 };
 
-export default writeinfo;
+export default FinalCheck;

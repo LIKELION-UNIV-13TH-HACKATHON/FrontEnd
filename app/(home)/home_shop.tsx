@@ -9,6 +9,8 @@ import BottomTaps from "@/components/shop/homepage/BottomTaps";
 import MiniKakaoMap from "@/components/kakaomap/MiniKakaoMap";
 import { router } from "expo-router";
 import { getCoordinates } from "@/util/kakaomap/address";
+import ServiceAgreeModal from "@/components/onboarding/customer/ServiceAgreeModal";
+import { useUserInfoStore } from "@/store/user/useUserInfoStore";
 
 const ADDRESS = "충남 천안시 동남구 영성로 35 1층 북촌손만두"; // 매장에 위치에 따라 달라짐
 const FALLBACK = { latitude: 37.5665, longitude: 126.978 }; // 서울 시청
@@ -19,6 +21,7 @@ const HomeShop = () => {
     longitude: number;
   } | null>(null);
   const [loading, setLoading] = useState(true);
+  const { user } = useUserInfoStore();
 
   useEffect(() => {
     let mounted = true;
@@ -74,6 +77,7 @@ const HomeShop = () => {
         <SubscribeGraph />
       </ScrollView>
       <BottomTaps />
+      {user.agree === false ? <ServiceAgreeModal /> : null}
     </View>
   );
 };

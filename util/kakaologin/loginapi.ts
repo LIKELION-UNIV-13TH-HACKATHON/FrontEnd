@@ -18,7 +18,7 @@ export const handleLogin = async () => {
     console.log("프로필 로딩 성공 ✅", profile);
     saveToken(result.accessToken);
     //서버에서 유저 데이터 받는 로직 추가해야함, 이미 회원 정보가 있으면 메인으로 ㄱ 판매자, 소비자 둘 다 가지고 있으면 판매자 페이지가 먼저
-    Alert.alert("카카오 로그인 성공", JSON.stringify(result));
+    Alert.alert("카카오 로그인 성공");
 
     useUserInfoStore.getState().setUser(DumpyUser);
     if (useUserInfoStore.getState().user.shopMember) {
