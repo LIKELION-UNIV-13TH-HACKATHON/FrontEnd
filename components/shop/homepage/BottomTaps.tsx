@@ -4,6 +4,8 @@ import { useRouter, usePathname } from "expo-router";
 import HomeIcon from "../../../assets/images/homeicon.svg";
 import ChartIcon from "../../../assets/images/charticon.svg";
 import MypageIcon from "../../../assets/images/mypageicon.svg";
+import ProductIcon from "@/assets/images/producticon.svg";
+import QAIcon from "@/assets/images/qaicon.svg";
 
 const BottomTaps = () => {
   const router = useRouter();
@@ -22,53 +24,72 @@ const BottomTaps = () => {
               fill={
                 pathname.includes("home_shop") || pathname.includes("map")
                   ? "#000000"
-                  : "#9CA3AF"
+                  : "#CCCCCC"
               }
             />
             <Text
-              className={
-                pathname.includes("home_shop") ? "text-black" : "text-gray-400"
-              }
+              className={`text-[12px] ${
+                pathname.includes("home_shop") ? "text-black" : "text-[#CCCCCC]"
+              }`}
             >
-              홈
+              매장
             </Text>
           </Pressable>
           <Pressable
-            onPress={() => router.push("/(chart)/papular_chart")}
-            className="flex-1 items-center justify-center gap-1"
+            onPress={() => router.push("/(home)/shop/question")}
+            className="flex-1 items-center justify-center gap-2"
           >
-            <ChartIcon
-              width={24}
-              height={24}
-              fill={pathname.includes("papular_chart") ? "#000000" : "#9CA3AF"}
+            <QAIcon
+              width={19}
+              height={19}
+              fill={pathname.includes("question") ? "#000000" : "#CCCCCC"}
             />
             <Text
               className={
-                pathname.includes("papular_chart")
-                  ? "text-black"
-                  : "text-gray-400"
+                pathname.includes("question")
+                  ? "text-[12px] text-black"
+                  : "text-[12px] text-[#CCCCCC]"
               }
             >
-              인기차트
+              문의
             </Text>
           </Pressable>
           <Pressable
-            onPress={() => router.push("/(mypage)/mypage_shop")}
+            onPress={() => router.push("/(home)/shop/product")}
+            className="flex-1 items-center justify-center gap-2"
+          >
+            <ProductIcon
+              width={19}
+              height={19}
+              fill={pathname.includes("product") ? "#000000" : "#CCCCCC"}
+            />
+            <Text
+              className={
+                pathname.includes("product")
+                  ? "text-[12px] text-black"
+                  : "text-[12px] text-[#CCCCCC]"
+              }
+            >
+              재고
+            </Text>
+          </Pressable>
+          <Pressable
+            onPress={() => router.push("/(home)/shop/mypage")}
             className="flex-1 items-center justify-center gap-1"
           >
             <MypageIcon
               width={24}
               height={24}
-              fill={pathname.includes("mypage_shop") ? "#000000" : "#9CA3AF"}
+              fill={pathname.includes("mypage_shop") ? "#000000" : "#CCCCCC"}
             />
             <Text
               className={
                 pathname.includes("mypage_shop")
-                  ? "text-black"
-                  : "text-gray-400"
+                  ? "text-[12px] text-black"
+                  : "text-[12px] text-[#CCCCCC]"
               }
             >
-              마이페이지
+              마이
             </Text>
           </Pressable>
         </View>

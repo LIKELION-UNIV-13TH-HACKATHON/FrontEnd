@@ -4,9 +4,12 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { View } from "react-native";
+import { usePathname } from "expo-router";
 
 // import { useColorScheme } from "@/components/useColorScheme";
-import { SafeAreaView } from "react-native";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -45,21 +48,29 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+  const pathname = usePathname();
+  const insets = useSafeAreaInsets();
+  const isIndex = pathname === "/"; // expo-router index
+
+  const paddingStyle = isIndex
+    ? { paddingTop: 0, paddingBottom: 0, paddingLeft: 0, paddingRight: 0 }
+    : {
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+        paddingLeft: insets.left,
+        paddingRight: insets.right,
+      };
+
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <View className="flex-1 bg-white" style={paddingStyle}>
       <Stack screenOptions={{ contentStyle: { backgroundColor: "#ffffff" } }}>
         <Stack.Screen
           name="index"
-          options={{
-            headerShown: false,
-            animation: "fade",
-          }}
+          options={{ headerShown: false, animation: "fade" }}
         />
         <Stack.Screen
           name="(kakaologin)/login"
-          options={{
-            headerShown: false,
-          }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="(home)/home_shop"
@@ -70,7 +81,7 @@ function RootLayoutNav() {
           options={{ headerShown: false, animation: "none" }}
         />
         <Stack.Screen
-          name="[userid]/(mypage)/mypage_shop"
+          name="[userid]/(mypage)/mypage_customer"
           options={{ headerShown: false, animation: "none" }}
         />
         <Stack.Screen
@@ -105,7 +116,23 @@ function RootLayoutNav() {
           name="[userid]/onboarding/(shop)/finalcheck"
           options={{ headerShown: false, animation: "none" }}
         />
+        <Stack.Screen
+          name="(home)/shop/mypage"
+          options={{ headerShown: false, animation: "none" }}
+        />
+        <Stack.Screen
+          name="(home)/shop/product"
+          options={{ headerShown: false, animation: "none" }}
+        />
+        <Stack.Screen
+          name="(home)/shop/question"
+          options={{ headerShown: false, animation: "none" }}
+        />
+        <Stack.Screen
+          name="(home)/shop/question/[boardid]"
+          options={{ headerShown: false, animation: "none" }}
+        />
       </Stack>
-    </SafeAreaView>
+    </View>
   );
 }
