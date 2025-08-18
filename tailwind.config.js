@@ -6,6 +6,7 @@ module.exports = {
         main: "#F28715",
         gray1: "#cccccc",
         black90: "#191919",
+        gray2: "#999999",
       },
     },
   },

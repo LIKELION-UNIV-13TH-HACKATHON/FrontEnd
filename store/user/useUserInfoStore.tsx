@@ -4,6 +4,7 @@ import { Shop } from "../shop/useShopInfoStore";
 export type User = {
   id: number;
   name: string;
+  shopName: string | null;
   email: string;
   nickname: string | null;
   bookMark: Shop[] | null;
@@ -23,6 +24,7 @@ export const useUserInfoStore = create<StoreState>((set, get) => ({
     id: 0,
     name: "",
     email: "",
+    shopName: null,
     nickname: null,
     bookMark: null,
     shopMember: false,

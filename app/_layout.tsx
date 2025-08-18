@@ -101,6 +101,10 @@ function RootLayoutNav() {
           name="[userid]/onboarding/(shop)/writeinfo"
           options={{ headerShown: false, animation: "none" }}
         />
+        <Stack.Screen
+          name="[userid]/onboarding/(shop)/finalcheck"
+          options={{ headerShown: false, animation: "none" }}
+        />
       </Stack>
     </SafeAreaView>
   );
