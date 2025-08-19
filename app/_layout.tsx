@@ -132,6 +132,34 @@ function RootLayoutNav() {
           name="(home)/shop/question/[boardid]"
           options={{ headerShown: false, animation: "none" }}
         />
+        <Stack.Screen
+          name="(home)/shop/writealarm/guide"
+          options={{ headerShown: false, animation: "none" }}
+        />
+        <Stack.Screen
+          name="(home)/shop/writealarm/inputimg"
+          options={{ headerShown: false, animation: "none" }}
+        />
+        <Stack.Screen
+          name="(home)/shop/writealarm/recommendtext"
+          options={{ headerShown: false, animation: "none" }}
+        />
+        <Stack.Screen
+          name="(home)/shop/writealarm/select"
+          options={{ headerShown: false, animation: "none" }}
+        />
+        <Stack.Screen
+          name="(home)/shop/writealarm/selftext"
+          options={{ headerShown: false, animation: "none" }}
+        />
+        <Stack.Screen
+          name="(home)/shop/writealarm/stt"
+          options={{ headerShown: false, animation: "none" }}
+        />
+        <Stack.Screen
+          name="(home)/shop/writealarm/timeset"
+          options={{ headerShown: false, animation: "none" }}
+        />
       </Stack>
     </View>
   );

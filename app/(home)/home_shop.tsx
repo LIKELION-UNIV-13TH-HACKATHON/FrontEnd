@@ -7,7 +7,6 @@ import ShopDashBoard from "@/components/shop/homepage/ShopDashBoard";
 import SubscribeGraph from "@/components/shop/homepage/SubscribeGraph";
 import BottomTaps from "@/components/shop/homepage/BottomTaps";
 import MiniKakaoMap from "@/components/kakaomap/MiniKakaoMap";
-import { router } from "expo-router";
 import { getCoordinates } from "@/util/kakaomap/address";
 import ServiceAgreeModal from "@/components/onboarding/customer/ServiceAgreeModal";
 import { useUserInfoStore } from "@/store/user/useUserInfoStore";
@@ -55,22 +54,13 @@ const HomeShop = () => {
       <ScrollView contentContainerStyle={{ paddingBottom: 96 }}>
         <ShopInfo />
 
-        <Pressable
-          onPress={() =>
-            router.push({
-              pathname: "/map",
-              params: { mode: "current" },
-            })
-          }
-        >
-          {loading && !coords ? (
-            <View className="h-24">
-              <ActivityIndicator />
-            </View>
-          ) : (
-            <MiniKakaoMap latitude={mapLat} longitude={mapLng} />
-          )}
-        </Pressable>
+        {loading && !coords ? (
+          <View className="h-24">
+            <ActivityIndicator />
+          </View>
+        ) : (
+          <MiniKakaoMap latitude={mapLat} longitude={mapLng} />
+        )}
 
         <SetAlarmGrid />
         <ShopDashBoard />
