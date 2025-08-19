@@ -5,7 +5,6 @@ export type User = {
   id: number;
   name: string;
   shopName: string | null;
-  email: string;
   nickname: string | null;
   bookMark: Shop[] | null;
   shopMember: boolean;
@@ -23,7 +22,6 @@ export const useUserInfoStore = create<StoreState>((set, get) => ({
   user: {
     id: 0,
     name: "",
-    email: "",
     shopName: null,
     nickname: null,
     bookMark: null,
