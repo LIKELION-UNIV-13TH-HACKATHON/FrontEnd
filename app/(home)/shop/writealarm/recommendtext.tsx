@@ -1,12 +1,15 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text } from "react-native";
+import React from "react";
+import ReturnHeader from "@/components/onboarding/ReturnHeader";
+import RecommendTextBody from "@/components/shop/setalarmpage/RecommendTextBody";
 
 const RecommendText = () => {
   return (
-    <View>
-      <Text>RecommendText</Text>
+    <View className="flex-1">
+      <ReturnHeader />
+      <RecommendTextBody />
     </View>
-  )
-}
+  );
+};
 
-export default RecommendText
+export default RecommendText;
