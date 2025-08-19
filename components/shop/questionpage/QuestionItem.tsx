@@ -20,7 +20,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
 }) => {
   return (
     <Pressable
-      className="gap-2 py-6 border-b border-[#EDEDED]"
+      className="gap-2 py-4 border-b border-[#EDEDED]"
       onPress={() =>
         router.push({
           pathname: "/(home)/shop/question/[boardid]",

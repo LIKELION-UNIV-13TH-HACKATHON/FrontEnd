@@ -1,12 +1,19 @@
 import { View, Text } from "react-native";
 import React from "react";
+import Header from "@/components/shop/questionpage/Header";
+import ProductBody from "@/components/shop/productpage/ProductBody";
+import BottomTaps from "@/components/shop/homepage/BottomTaps";
+import RegisterProduct from "@/components/shop/productpage/RegisterProduct";
 
-const product = () => {
+const Product = () => {
   return (
-    <View>
-      <Text>product</Text>
+    <View className="flex-1 relative">
+      <Header />
+      <ProductBody />
+      <RegisterProduct />
+      <BottomTaps />
     </View>
   );
 };
 
-export default product;
+export default Product;

@@ -12,7 +12,7 @@ const BottomTaps = () => {
   const pathname = usePathname();
   return (
     <View>
-      <View className="absolute left-0 right-0 bottom-0 bg-white border-t border-gray-200">
+      <View className="absolute left-0 right-0 bottom-0 bg-white border-t border-gray-200 shadow-lg">
         <View className="flex-row items-center h-16">
           <Pressable
             onPress={() => router.push("/(home)/home_shop")}
