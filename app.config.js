@@ -30,9 +30,16 @@ export default ({ config }) => {
           NSAllowsArbitraryLoads: true,
           NSAllowsArbitraryLoadsInWebContent: true,
         },
-        NSPhotoLibraryUsageDescription: "프로필 사진 및 이미지 업로드를 위해 사진 보관함 접근 권한이 필요합니다.",
-        NSCameraUsageDescription: "사진 촬영을 통한 이미지 업로드를 위해 카메라 접근 권한이 필요합니다.",
-        NSPhotoLibraryAddUsageDescription: "촬영한 사진을 앨범에 저장하기 위해 쓰기 권한이 필요합니다.",
+        NSPhotoLibraryUsageDescription:
+          "프로필 사진 및 이미지 업로드를 위해 사진 보관함 접근 권한이 필요합니다.",
+        NSCameraUsageDescription:
+          "사진 촬영을 통한 이미지 업로드를 위해 카메라 접근 권한이 필요합니다.",
+        NSPhotoLibraryAddUsageDescription:
+          "촬영한 사진을 앨범에 저장하기 위해 쓰기 권한이 필요합니다.",
+        NSMicrophoneUsageDescription:
+          "음성 인식을 위해 마이크 접근이 필요합니다.",
+        NSSpeechRecognitionUsageDescription:
+          "음성 인식 처리를 위해 권한이 필요합니다.",
       },
     },
     web: {

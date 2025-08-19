@@ -22,6 +22,7 @@
     "@react-native-firebase/messaging": "^23.0.0",
     "@react-native-picker/picker": "^2.11.1",
     "@react-native-seoul/kakao-login": "^5.4.1",
+    "@react-native-voice/voice": "^3.2.4",
     "@react-navigation/native": "^7.1.6",
     "axios": "^1.11.0",
     "expo": "~53.0.20",
@@ -53,6 +54,7 @@
     "react-native-shadow-generator": "^1.1.2",
     "react-native-svg": "^15.12.1",
     "react-native-swiper": "^1.6.0",
+    "react-native-voice": "^0.3.0",
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5",
     "zustand": "^5.0.7"
