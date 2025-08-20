@@ -4,10 +4,12 @@ import { useRouter, usePathname } from "expo-router";
 import HomeIcon from "../../assets/images/homeicon.svg";
 import ChartIcon from "../../assets/images/charticon.svg";
 import MypageIcon from "../../assets/images/mypageicon.svg";
+import { useUserInfoStore } from "@/store/user/useUserInfoStore";
 
 const BottomTaps = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const { user } = useUserInfoStore();
   return (
     <View>
       <View className="absolute left-0 right-0 bottom-0 bg-white border-t border-gray-200">
@@ -49,7 +51,12 @@ const BottomTaps = () => {
             </Text>
           </Pressable>
           <Pressable
-            onPress={() => router.push("/(mypage)/mypage_shop")}
+            onPress={() =>
+              router.push({
+                pathname: "/[userid]/(mypage)/mypage",
+                params: { userid: String(user.id) },
+              })
+            }
             className="flex-1 items-center justify-center gap-1"
           >
             <MypageIcon

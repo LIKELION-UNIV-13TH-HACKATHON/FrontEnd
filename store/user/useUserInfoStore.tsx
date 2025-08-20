@@ -1,5 +1,8 @@
 import { create } from "zustand";
 import { Shop } from "../shop/useShopInfoStore";
+import UserIcon from "@/assets/images/profile.svg";
+
+type SvgAvatarComponent = React.FC<React.ComponentProps<typeof UserIcon>>;
 
 export type User = {
   id: number;
@@ -10,6 +13,7 @@ export type User = {
   shopMember: boolean;
   customerMember: boolean;
   agree: boolean;
+  avatar: SvgAvatarComponent;
 };
 
 export type StoreState = {
@@ -28,6 +32,7 @@ export const useUserInfoStore = create<StoreState>((set, get) => ({
     shopMember: false,
     customerMember: false,
     agree: false,
+    avatar: UserIcon,
   },
   setUser: (user) => set((state) => ({ user: { ...state.user, ...user } })),
   getUserInfo: () => get().user,

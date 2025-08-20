@@ -3,12 +3,27 @@ import { getProfile, login } from "@react-native-seoul/kakao-login";
 import { Alert } from "react-native";
 import { saveToken } from "./token";
 import { useUserInfoStore } from "@/store/user/useUserInfoStore";
+import UserIcon from "@/assets/images/profile.svg";
 
-const DumpyUser = {
+type SvgAvatarComponent = React.FC<React.ComponentProps<typeof UserIcon>>;
+
+type User = {
+  id: number;
+  name: string;
+  email: string;
+  customerMember: boolean;
+  shopMember?: boolean;
+  agree: boolean;
+  avatar?: SvgAvatarComponent;
+};
+
+const DumpyUser: User = {
   name: "강대훈",
   id: 1,
   email: "crol0101@naver.com",
-  shopMember: true,
+  customerMember: true,
+  agree: true,
+  avatar: UserIcon,
 };
 
 export const handleLogin = async () => {
