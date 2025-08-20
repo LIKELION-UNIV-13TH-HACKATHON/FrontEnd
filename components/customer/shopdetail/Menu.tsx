@@ -7,7 +7,10 @@ const Menu = () => {
   return (
     <View>
       {list.map((item, idx) => (
-        <View key={`menu-${idx}`} className="h-36 flex-row justify-between">
+        <View
+          key={`menu-${idx}`}
+          className="h-36 flex-row justify-between border-b border-[#F9F9F9] py-4 "
+        >
           <View className=" justify-center gap-4">
             <View>
               <Text className="font-bold text-base">{item}</Text>

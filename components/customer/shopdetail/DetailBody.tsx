@@ -36,7 +36,7 @@ const DetailBody: React.FC = () => {
       </View>
 
       <View
-        className="px-4 pt-4 mb-4 border-b border-[#EDEDED] w-full bg-white"
+        className="px-4 pt-4 border-b border-[#EDEDED] w-full bg-white"
         style={{ zIndex: 1 }}
       >
         <View className="flex-row gap-x-6">
@@ -55,6 +55,7 @@ const DetailBody: React.FC = () => {
           ))}
         </View>
       </View>
+      <View className="bg-[#F9F9F9] w-full h-[10px]" />
 
       <View className="px-4">
         {tab === "영업정보" && <Info />}
