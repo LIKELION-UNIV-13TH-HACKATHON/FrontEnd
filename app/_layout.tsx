@@ -81,7 +81,11 @@ function RootLayoutNav() {
           options={{ headerShown: false, animation: "none" }}
         />
         <Stack.Screen
-          name="[userid]/(mypage)/mypage_customer"
+          name="[userid]/(mypage)/mypage"
+          options={{ headerShown: false, animation: "none" }}
+        />
+        <Stack.Screen
+          name="[userid]/(mypage)/subscribe"
           options={{ headerShown: false, animation: "none" }}
         />
         <Stack.Screen
