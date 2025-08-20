@@ -80,11 +80,11 @@ const BottomTaps = () => {
             <MypageIcon
               width={24}
               height={24}
-              fill={pathname.includes("mypage_shop") ? "#000000" : "#CCCCCC"}
+              fill={pathname.includes("mypage") ? "#000000" : "#CCCCCC"}
             />
             <Text
               className={
-                pathname.includes("mypage_shop")
+                pathname.includes("mypage")
                   ? "text-[12px] text-black"
                   : "text-[12px] text-[#CCCCCC]"
               }
