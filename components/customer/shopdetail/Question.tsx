@@ -77,14 +77,14 @@ const Question: React.FC<Props> = ({ data }) => {
   const { id } = useLocalSearchParams() as { id?: string };
 
   return (
-    <View className="w-full" style={{ flex: 1 }}>
+    <View className="w-full flex-1">
       {list.map((item) => {
         const opened = openIds.has(item.id);
         return (
           <View key={item.id} className="border-b border-[#EDEDED]">
             <Pressable
               onPress={() => toggle(item.id)}
-              className="px-4 pt-5 pb-2 flex-row items-center justify-between"
+              className="px-2 pt-5 pb-2 flex-row items-center justify-between"
             >
               <Text
                 className="font-semibold text-base text-gray-900 max-w-[240px] flex-wrap"
@@ -130,7 +130,7 @@ const Question: React.FC<Props> = ({ data }) => {
       <View style={{ height: insets.bottom + 72 }} />
 
       <Pressable
-        className="absolute left-2 right-2 items-center justify-center rounded-lg border border-[#CCCCCC] py-3.5"
+        className="absolute left-2 right-2 items-center justify-center rounded-lg border border-[#CCCCCC] py-3.5 "
         style={{ bottom: insets.bottom }}
         onPress={() =>
           router.push({
