@@ -6,6 +6,7 @@ import EmptyCircle from "@/assets/images/emptyCircle.svg";
 import MicIcon from "@/assets/images/ministticon.svg";
 import { useAlarmStore } from "@/store/alarm/useAlarmStore";
 import { router } from "expo-router";
+import RecommendList from "./RecommendList";
 const RecommendTextBody = () => {
   const { alarmInfo, updateAlarm } = useAlarmStore();
   const [text, setText] = useState(alarmInfo.contents);
@@ -26,7 +27,7 @@ const RecommendTextBody = () => {
         <View className="flex-row space-x-2 items-center">
           <TextInput
             className="border flex-1 rounded-lg border-[#EDEDED] text-[16px] h-14 px-2"
-            value={text}
+            value={alarmInfo.contents}
             onChangeText={(v) => {
               setText(v);
               updateAlarm({ contents: v });
@@ -36,8 +37,12 @@ const RecommendTextBody = () => {
             <MicIcon />
           </Pressable>
         </View>
+        <RecommendList />
       </View>
-      <NextButton active={true} onPress={() => console.log("click")} />
+      <NextButton
+        active={true}
+        onPress={() => router.push("/(home)/shop/writealarm/inputimg")}
+      />
     </View>
   );
 };

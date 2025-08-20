@@ -16,8 +16,8 @@ const NextButton: React.FC<NextButtonProps> = ({ active, onPress }) => {
       disabled={!active}
     >
       <Text
-        className={`text-center font-bold text-base ${
-          active ? "text-white" : "text-[#BFBFBF]"
+        className={`text-center text-base ${
+          active ? "text-white font-bold" : "text-[#BFBFBF] font-semibold"
         }`}
       >
         다음
