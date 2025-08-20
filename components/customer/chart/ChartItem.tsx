@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, Pressable } from "react-native";
 import VectorMark from "@/assets/images/grayvectormark.svg";
+import SubscribeButton from "@/components/common/SubscribeButton";
 
 type ChartItemProps = {
   id: number;
@@ -9,7 +10,6 @@ type ChartItemProps = {
   subs: number; // 구독/찜 인원 수
   distance: number; // km
   onPress?: (id: number) => void;
-  onToggleBookmark?: (id: number) => void;
   bookmarked?: boolean;
 };
 
@@ -20,9 +20,10 @@ const ChartItem: React.FC<ChartItemProps> = ({
   subs,
   distance,
   onPress,
-  onToggleBookmark,
   bookmarked = false,
 }) => {
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
   return (
     <Pressable onPress={() => onPress?.(id)} className="bg-white py-4">
       <View className="flex-row items-center">
@@ -46,19 +47,13 @@ const ChartItem: React.FC<ChartItemProps> = ({
           </View>
         </View>
 
-        <Pressable
-          hitSlop={8}
-          onPress={() => onToggleBookmark?.(id)}
-          className="ml-3 flex-col items-start justify-start h-full"
-        >
-          <Text
-            className={
-              bookmarked ? "text-[#F18A00] text-xl" : "text-[#CFCFCF] text-xl"
-            }
-          >
-            ★
-          </Text>
-        </Pressable>
+        <View className="h-full">
+          <SubscribeButton
+            isSubscribed={isSubscribed}
+            onToggle={() => setIsSubscribed((prev) => !prev)}
+            size={19}
+          />
+        </View>
       </View>
 
       <View className="mt-4 h-[1px] bg-[#EFEFEF]" />

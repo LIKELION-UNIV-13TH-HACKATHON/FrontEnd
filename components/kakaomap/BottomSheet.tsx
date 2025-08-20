@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, Pressable, Animated } from "react-native";
-import FilledStar from "../../assets/images/filledstar.svg";
 import BannerIcon from "../../assets/images/bannericon.svg";
 import { router } from "expo-router";
 import ImageSwiper from "../customer/shopdetail/ImageSwiper";
+import SubscribeButton from "../common/SubscribeButton";
 type MarkerPayload = {
   id?: number;
   name?: string;
@@ -21,6 +21,7 @@ const BottomSheet: React.FC<{
   height?: number;
 }> = ({ open, y, data, height = 360 }) => {
   if (!open) return null;
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   return (
     <>
@@ -51,7 +52,10 @@ const BottomSheet: React.FC<{
                   {data?.name ?? "상세 정보"}
                 </Text>
               </Pressable>
-              <FilledStar />
+              <SubscribeButton
+                isSubscribed={isSubscribed}
+                onToggle={() => setIsSubscribed((prev) => !prev)}
+              />
             </View>
 
             <Text className="  text-[#9E9E9E]">
