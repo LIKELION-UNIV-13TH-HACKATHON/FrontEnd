@@ -1,12 +1,15 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text } from "react-native";
+import React from "react";
+import TimeSetBody from "@/components/shop/setalarmpage/TimeSetBody";
+import ReturnHeader from "@/components/onboarding/ReturnHeader";
 
 const TimeSet = () => {
   return (
-    <View>
-      <Text>TimeSet</Text>
+    <View className="flex-1">
+      <ReturnHeader />
+      <TimeSetBody />
     </View>
-  )
-}
+  );
+};
 
-export default TimeSet
+export default TimeSet;
