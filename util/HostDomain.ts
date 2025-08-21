@@ -1,1 +1,1 @@
-export const HostDomain = "http://192.168.219.194:8082";
+export const HostDomain = "http://172.30.1.6:8082";
