@@ -7,7 +7,7 @@ import NextButton from "@/components/NextButton";
 const Select = () => {
   return (
     <View className="flex-1">
-      <ReturnHeader />
+      <ReturnHeader kind="alarm"/>
       <SelectBody />
     </View>
   );

@@ -6,7 +6,7 @@ import WriteInfoBody from "@/components/onboarding/shop/WriteInfoBody";
 const writeinfo = () => {
   return (
     <View className="flex-1">
-      <ReturnHeader />
+      <ReturnHeader kind="onboarding"/>
       <WriteInfoBody />
     </View>
   );

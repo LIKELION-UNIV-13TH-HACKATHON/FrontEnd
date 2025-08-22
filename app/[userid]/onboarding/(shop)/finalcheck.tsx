@@ -6,7 +6,7 @@ import FinalCheckBody from "@/components/onboarding/shop/FinalCheckBody";
 const FinalCheck = () => {
   return (
     <View className="flex-1">
-      <ReturnHeader />
+      <ReturnHeader kind="onboarding"/>
       <FinalCheckBody />
     </View>
   );

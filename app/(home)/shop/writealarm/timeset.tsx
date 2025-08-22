@@ -6,7 +6,7 @@ import ReturnHeader from "@/components/onboarding/ReturnHeader";
 const TimeSet = () => {
   return (
     <View className="flex-1">
-      <ReturnHeader />
+      <ReturnHeader kind="alarm"/>
       <TimeSetBody />
     </View>
   );

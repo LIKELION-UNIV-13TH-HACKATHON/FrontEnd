@@ -1,17 +1,19 @@
 import { View, Text, Pressable } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { useUserInfoStore } from "@/store/user/useUserInfoStore";
 import SideArrow from "@/assets/images/sidearrow.svg";
 import { router, useLocalSearchParams } from "expo-router";
+import SwichModal from "@/components/common/SwichModal";
 
 const MypageBody = () => {
   const { user } = useUserInfoStore();
   const Avatar = user.avatar;
   const { userid } = useLocalSearchParams();
+  const [visible, setVisible] = useState(false);
   return (
     <View className="flex-1 p-4">
       <View className="flex-row items-center gap-4">
-        <Pressable>
+        <Pressable onLongPress={() => setVisible(true)}>
           <Avatar width={65} />
         </Pressable>
         <Text className="text-[20px] font-bold">{user.name}</Text>
@@ -29,6 +31,11 @@ const MypageBody = () => {
         <Text className="text-[16px] text-[#515151]">구독 내역 보러가기</Text>
         <SideArrow />
       </Pressable>
+      <SwichModal
+        visible={visible}
+        setVisible={setVisible}
+        changeValue={"판매자"}
+      />
     </View>
   );
 };

@@ -6,7 +6,7 @@ import PurPoseBody from "@/components/onboarding/PurPoseBody";
 const Purpose = () => {
   return (
     <View className="flex-1">
-      <ReturnHeader />
+      <ReturnHeader kind="onboarding"/>
       <PurPoseBody />
     </View>
   );

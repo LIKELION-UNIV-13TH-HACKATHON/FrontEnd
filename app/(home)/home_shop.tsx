@@ -51,7 +51,10 @@ const HomeShop = () => {
   return (
     <View className="flex-1">
       <HeaderShop />
-      <ScrollView contentContainerStyle={{ paddingBottom: 96 }}>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 96 }}
+        showsVerticalScrollIndicator={false}
+      >
         <ShopInfo />
 
         {loading && !coords ? (

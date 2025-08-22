@@ -6,7 +6,7 @@ import SelfTextBody from "@/components/shop/setalarmpage/SelfTextBody";
 const SelfText = () => {
   return (
     <View className="flex-1">
-      <ReturnHeader />
+      <ReturnHeader kind="alarm"/>
       <SelfTextBody />
     </View>
   );

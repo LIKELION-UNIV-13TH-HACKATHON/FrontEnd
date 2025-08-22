@@ -14,6 +14,7 @@ export type User = {
   customerMember: boolean;
   agree: boolean;
   avatar: SvgAvatarComponent;
+  mainImage: string;
 };
 
 export type StoreState = {
@@ -33,6 +34,7 @@ export const useUserInfoStore = create<StoreState>((set, get) => ({
     customerMember: false,
     agree: false,
     avatar: UserIcon,
+    mainImage: "",
   },
   setUser: (user) => set((state) => ({ user: { ...state.user, ...user } })),
   getUserInfo: () => get().user,
