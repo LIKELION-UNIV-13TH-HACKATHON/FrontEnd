@@ -7,11 +7,14 @@ import { router, useLocalSearchParams } from "expo-router";
 const SwichModal = ({
   visible,
   setVisible,
+  changeValue,
 }: {
   visible: boolean;
   setVisible: (v: boolean) => void;
+  changeValue: string;
 }) => {
   const { userid } = useLocalSearchParams();
+  const { user } = useUserInfoStore();
   return (
     <Modal
       animationType="fade"
@@ -33,9 +36,7 @@ const SwichModal = ({
         >
           <View className=" items-center flex-1 space-y-6">
             <Icon />
-            <Text className="font-semibold text-lg">
-              {useUserInfoStore().getUserInfo().nickname || "이름"}
-            </Text>
+            <Text className="font-semibold text-lg">{user.name}</Text>
           </View>
 
           <Pressable
@@ -50,7 +51,7 @@ const SwichModal = ({
           >
             <View className="bg-main h-12 rounded-2xl items-center justify-center ">
               <Text className="text-[16px] font-semibold text-white">
-                판매자 계정으로 전환하기
+                {changeValue} 계정으로 전환하기
               </Text>
             </View>
           </Pressable>

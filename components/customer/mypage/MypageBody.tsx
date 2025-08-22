@@ -31,7 +31,11 @@ const MypageBody = () => {
         <Text className="text-[16px] text-[#515151]">구독 내역 보러가기</Text>
         <SideArrow />
       </Pressable>
-      <SwichModal visible={visible} setVisible={setVisible} />
+      <SwichModal
+        visible={visible}
+        setVisible={setVisible}
+        changeValue={"판매자"}
+      />
     </View>
   );
 };
