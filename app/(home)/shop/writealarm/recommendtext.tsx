@@ -6,7 +6,7 @@ import RecommendTextBody from "@/components/shop/setalarmpage/RecommendTextBody"
 const RecommendText = () => {
   return (
     <View className="flex-1">
-      <ReturnHeader />
+      <ReturnHeader kind="alarm"/>
       <RecommendTextBody />
     </View>
   );

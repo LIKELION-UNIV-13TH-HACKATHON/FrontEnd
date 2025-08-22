@@ -6,7 +6,7 @@ import STTBody from "@/components/shop/setalarmpage/STTBody";
 const STT = () => {
   return (
     <View className="flex-1">
-      <ReturnHeader />
+      <ReturnHeader kind="alarm"/>
       <STTBody />
     </View>
   );

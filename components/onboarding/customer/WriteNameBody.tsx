@@ -11,7 +11,7 @@ const WriteNameBody = () => {
   const [nickname, setNickName] = useState("");
 
   return (
-    <View className="flex-1 px-4 py-2 justify-between">
+    <View className="flex-1 px-4  justify-between">
       <View className=" space-y-9">
         <View className="flex-row gap-1">
           <EmptyCircle />

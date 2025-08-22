@@ -41,6 +41,7 @@ const SwichModal = ({
           <Pressable
             className="py-4 border-b border-[#EFEFEF]"
             onPress={() => {
+              router.dismissAll();
               router.replace({
                 pathname: "/[userid]/onboarding/purpose",
                 params: { userid: String(userid) },

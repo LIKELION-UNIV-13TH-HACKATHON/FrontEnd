@@ -6,7 +6,7 @@ import WriteNameBody from "@/components/onboarding/customer/WriteNameBody";
 const WriteName = () => {
   return (
     <View className="flex-1">
-      <ReturnHeader />
+      <ReturnHeader kind="onboarding"/>
       <WriteNameBody />
     </View>
   );

@@ -70,7 +70,7 @@ function RootLayoutNav() {
         />
         <Stack.Screen
           name="(kakaologin)/login"
-          options={{ headerShown: false }}
+          options={{ headerShown: false, animation: "simple_push" }}
         />
         <Stack.Screen
           name="(home)/home_shop"
