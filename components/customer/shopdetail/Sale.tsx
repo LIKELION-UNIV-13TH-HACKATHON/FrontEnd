@@ -9,7 +9,7 @@ type ResType = {
   shopId: number;
   shopName: string;
   message: string;
-  sentAt: Date;
+  sentAt: number;
 };
 
 const Sale = () => {
@@ -20,13 +20,7 @@ const Sale = () => {
     try {
       if (!id) return;
       const res = await getSale(Number(id));
-      if (Array.isArray(res)) {
-        setList(res as ResType[]);
-      } else if (res?.responses && Array.isArray(res.responses)) {
-        setList(res.responses as ResType[]);
-      } else {
-        setList([]);
-      }
+      setList(res.responses as ResType[]);
     } catch (error) {
       console.error("getSale 실패", error);
       setList([]);
@@ -34,17 +28,14 @@ const Sale = () => {
   }, [id]);
 
   useEffect(() => {
-    fetchSale();
+    // fetchSale();
   }, [fetchSale]);
 
   return (
     <View>
       {list.map((item, idx) => (
         <View
-          key={`${item.shopId}-${idx}-${
-            typeof item.sentAt === "string"
-              ? item.sentAt
-              : (item.sentAt as Date).toISOString?.() ?? idx
+          key={`${item.shopId}
           }`}
           className="flex-row w-full h-28 border-b justify-center p-6 gap-2 border-[#EDEDED]"
         >
@@ -54,7 +45,7 @@ const Sale = () => {
               {item.message}
             </Text>
             <Text className="text-gray1 text-[13px]">
-              {timeAgo(Number(item.sentAt))}
+              {timeAgo(item.sentAt)}
             </Text>
           </View>
         </View>

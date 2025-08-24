@@ -12,5 +12,25 @@ export const getSale = async (id: number) => {
   }
 };
 
-export const getMenu = async () => {};
-export const getQuestion = async () => {};
+export const getMenu = async (shopId: number) => {
+  try {
+    const res = await http.get(`/shops/${shopId}/menus`);
+    if (res.status === 200) {
+      return res.data.responses;
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+export const getQuestion = async (shopId: number) => {
+  try {
+    const res = await http.get(`/shops/${shopId}/inquiries/customers`);
+    if (res.status === 200) {
+      return res.data.responses;
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

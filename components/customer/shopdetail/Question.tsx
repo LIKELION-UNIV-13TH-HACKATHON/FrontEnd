@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router, useLocalSearchParams } from "expo-router";
+import { getQuestion } from "@/util/api/customer/getShopDetail";
 
 if (
   Platform.OS === "android" &&
@@ -63,8 +64,10 @@ const defaultData: QA[] = [
 
 const Question: React.FC<Props> = ({ data }) => {
   const insets = useSafeAreaInsets();
-  const list = useMemo(() => data ?? defaultData, [data]);
   const [openIds, setOpenIds] = useState<Set<string>>(new Set());
+  const [qas, setQas] = useState<QA[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const toggle = (id: string) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -76,12 +79,56 @@ const Question: React.FC<Props> = ({ data }) => {
   };
   const { id } = useLocalSearchParams() as { id?: string };
 
+  React.useEffect(() => {
+    let cancelled = false;
+    const run = async () => {
+      try {
+        if (!id || data) return;
+        setLoading(true);
+        setError(null);
+        const arr = await getQuestion(Number(id));
+        if (!cancelled) {
+          const list = Array.isArray(arr) ? arr : arr?.responses;
+          const mapped: QA[] = (Array.isArray(list) ? list : []).map(
+            (it: any) => ({
+              id: String(it?.inquiryId ?? it?.id ?? it?.qaId ?? Math.random()),
+              question: String(it?.question ?? it?.title ?? ""),
+              answer: it?.answer ?? undefined,
+            })
+          );
+          setQas(mapped);
+        }
+      } catch (e: any) {
+        if (!cancelled)
+          setError(e?.message ?? "문의 목록을 불러오지 못했습니다");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+    run();
+    return () => {
+      cancelled = true;
+    };
+  }, [id, data]);
+
+  const list = useMemo(() => {
+    if (data && data.length) return data;
+    if (qas && qas.length) return qas;
+    return defaultData; // fallback
+  }, [data, qas]);
+
   return (
     <View className="w-full flex-1">
+      {loading && (
+        <Text className="text-gray-500 px-2 py-2">
+          문의 목록을 불러오는 중…
+        </Text>
+      )}
+      {!!error && <Text className="text-red-500 px-2 py-2">{error}</Text>}
       {list.map((item) => {
         const opened = openIds.has(item.id);
         return (
-          <View key={item.id} className="border-b border-[#EDEDED]">
+          <View key={String(item.id)} className="border-b border-[#EDEDED]">
             <Pressable
               onPress={() => toggle(item.id)}
               className="px-2 pt-5 pb-2 flex-row items-center justify-between"

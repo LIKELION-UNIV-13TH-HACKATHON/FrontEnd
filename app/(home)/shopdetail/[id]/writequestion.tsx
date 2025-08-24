@@ -8,11 +8,14 @@ import {
   Platform,
   ScrollView,
   Alert,
+  Image,
 } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { useShopInfoStore } from "@/store/shop/useShopInfoStore";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SimpleHeader from "@/components/SimpleHeader";
+
+import { writeQuestion } from "@/util/api/customer/writeQuestion";
 
 const MAX_TITLE = 30;
 const MAX_BODY = 300;
@@ -38,10 +41,20 @@ const WriteQuestion: React.FC = () => {
     );
   }, [titleLen, bodyLen]);
 
-  const submit = () => {
+  const submit = async () => {
     if (disabled) return;
-    Alert.alert("등록 완료", "문의가 등록되었습니다.");
-    router.back();
+    try {
+      await writeQuestion({
+        shopId: Number(id),
+        title,
+        question: body,
+      });
+      Alert.alert("등록 완료", "문의가 등록되었습니다.");
+      router.back();
+    } catch (e) {
+      console.error(e);
+      Alert.alert("오류", "문의 등록에 실패했습니다.");
+    }
   };
 
   return (
@@ -58,13 +71,21 @@ const WriteQuestion: React.FC = () => {
       >
         <View className="p-4 border-b border-[#EDEDED] pb-4">
           <View className="flex-row gap-4 items-center">
-            <View className="rounded-full bg-[#D9D9D9] w-12 h-12" />
+            {info?.mainImage ? (
+              <Image
+                source={{ uri: info.mainImage }}
+                className="w-12 h-12 rounded-full"
+                resizeMode="cover"
+              />
+            ) : (
+              <View className="rounded-full bg-[#D9D9D9] w-12 h-12" />
+            )}
             <View className="flex-1">
               <Text className="font-semibold text-base" numberOfLines={1}>
-                {info.name}
+                {info!.name}
               </Text>
               <Text className="text-[#999999]" numberOfLines={1}>
-                {info.address}
+                {info!.address}
               </Text>
             </View>
           </View>
