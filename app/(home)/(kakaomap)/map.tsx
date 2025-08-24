@@ -7,6 +7,7 @@ import HeaderCustomer from "@/components/customer/HeaderCustomer";
 import BottomTaps from "@/components/customer/BottomTaps";
 import { useUserInfoStore } from "@/store/user/useUserInfoStore";
 import ServiceAgreeModal from "@/components/onboarding/customer/ServiceAgreeModal";
+import { getUserInfo } from "@/util/api/customer/getUserInfo";
 
 const Map = () => {
   const { status, coords, error, request } = useCurrentLocation({
@@ -16,6 +17,13 @@ const Map = () => {
   });
 
   const { user } = useUserInfoStore();
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      await getUserInfo();
+    };
+    fetchUserInfo();
+  }, []);
 
   return (
     <View className="flex-1">

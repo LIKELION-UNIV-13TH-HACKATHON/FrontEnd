@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, Pressable, ScrollView } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLocalSearchParams } from "expo-router";
-import { useShopInfoStore } from "@/store/shop/useShopInfoStore";
+import { useShopInfoStore, getIndustryLabel } from "@/store/shop/useShopInfoStore";
 import ImageSwiper from "./ImageSwiper";
 import Info from "./Info";
 import Sale from "./Sale";
@@ -25,14 +24,16 @@ const DetailBody: React.FC = () => {
       stickyHeaderIndices={[2]}
     >
       <View className="p-4">
-        <Text className="text-xl font-bold">{shop.name}</Text>
+        <Text className="text-xl font-bold">{shop?.name}</Text>
         <Text className="text-sm text-[#9E9E9E] pb-2">
-          {shop.industry} · {shop.address}
+          {getIndustryLabel(shop?.industry) ?? ""} · {shop?.address}
         </Text>
       </View>
 
       <View className="px-4">
-        <ImageSwiper />
+        <ImageSwiper
+          images={shop?.images ?? (shop?.mainImage ? [shop.mainImage] : [])}
+        />
       </View>
 
       <View

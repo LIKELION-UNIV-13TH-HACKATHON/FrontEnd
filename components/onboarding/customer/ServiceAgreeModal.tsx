@@ -17,7 +17,7 @@ const ServiceAgreeModal: React.FC = () => {
 
   const handleAgree = () => {
     if (!allAgreed) return;
-    // TODO: 서버에 동의 이력을 전송하는 API 연결해야함
+    
     setUser({ agree: true });
     setShowTerms(false);
   };

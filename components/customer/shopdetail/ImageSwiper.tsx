@@ -1,22 +1,16 @@
 import React from "react";
 import { View, Image, ScrollView } from "react-native";
 
-const images = [
-  require("@/assets/images/fruit1.png"),
-  require("@/assets/images/fruit2.png"),
-  require("@/assets/images/fruit3.png"),
-];
-
-const ImageSwiper = () => {
+const ImageSwiper = ({ images }: { images: string[] }) => {
   return (
-    <View className="h-36">
+    <View className="">
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <View className="flex-row gap-x-4">
-          {images.map((uri, idx) => (
+        <View className="flex-row gap-x-1">
+          {images.map((url, idx) => (
             <Image
               key={idx}
-              source={uri}
-              className="h-36 w-36"
+              source={{ uri: url }}
+              className="h-[160px] w-[160px] rounded-lg"
               resizeMode="cover"
             />
           ))}

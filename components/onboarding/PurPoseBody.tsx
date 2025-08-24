@@ -7,6 +7,7 @@ import { router } from "expo-router";
 import { useLocalSearchParams } from "expo-router";
 import EmptyCircle from "@/assets/images/emptyCircle.svg";
 import FilledCircle from "@/assets/images/filledCircle.svg";
+import { useUserInfoStore } from "@/store/user/useUserInfoStore";
 
 const PurPoseBody = () => {
   const [selected, setSelected] = useState<"판매자" | "소비자" | null>(null);
@@ -85,12 +86,24 @@ const PurPoseBody = () => {
         active={active}
         onPress={() => {
           if (!selected) return;
-          const pathname =
+          const pathnameNewMember =
             selected === "소비자"
               ? "/[userid]/onboarding/(customer)/writename"
               : "/[userid]/onboarding/(shop)/writeinfo";
 
-          router.push({ pathname, params: { userid: String(userid) } });
+          const pathnameOldMember =
+            selected === "소비자"
+              ? "/(home)/(kakaomap)/map"
+              : "/(home)/home_shop";
+
+          const finalPath = useUserInfoStore.getState().user.isNewMember
+            ? pathnameNewMember
+            : pathnameOldMember;
+
+          router.push({
+            pathname: finalPath,
+            params: { userid: String(userid) },
+          });
         }}
       />
     </View>
