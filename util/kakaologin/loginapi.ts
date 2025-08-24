@@ -1,38 +1,37 @@
 import { router } from "expo-router";
 import { getProfile, login } from "@react-native-seoul/kakao-login";
 import { Alert } from "react-native";
-import { saveToken } from "./token";
+import { getToken, saveToken } from "./token";
 import { useUserInfoStore } from "@/store/user/useUserInfoStore";
-
-const DumpyUser = {
-  name: "강대훈",
-  id: 1,
-  email: "crol0101@naver.com",
-  shopMember: true,
-  agree: true,
-};
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const handleLogin = async () => {
+  const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
   try {
     const result = await login();
     const profile = await getProfile();
-    console.log("로그인 성공 ✅", result);
-    console.log("프로필 로딩 성공 ✅", profile);
-    saveToken(result.accessToken);
-    //서버에서 유저 데이터 받는 로직 추가해야함, 이미 회원 정보가 있으면 메인으로 ㄱ 판매자, 소비자 둘 다 가지고 있으면 판매자 페이지가 먼저
+    try {
+      const res = await axios.post(`${BASE_URL}/auth/sign-in`, {
+        socialAccessToken: result.accessToken,
+      });
+      if (res.status === 200) {
+        useUserInfoStore.getState().setUser({
+          id: res.data.memberId,
+          isNewMember: res.data.isNewMember,
+        });
+        await saveToken(res.data.response.accessToken);
+        useUserInfoStore.getState().setUser({ name: profile.name });
+      }
+    } catch (err) {
+      console.error(err);
+    }
     Alert.alert("카카오 로그인 성공");
 
-    useUserInfoStore.getState().setUser(DumpyUser);
-    if (useUserInfoStore.getState().user.shopMember) {
-      router.push("/(home)/home_shop");
-    } else if (useUserInfoStore.getState().user.customerMember) {
-      router.push("/(home)/(kakaomap)/map");
-    } else {
-      router.push({
-        pathname: "/[userid]/onboarding/purpose",
-        params: { userid: String(DumpyUser.id) },
-      });
-    }
+    router.push({
+      pathname: "/[userid]/onboarding/purpose",
+      params: { userid: String(useUserInfoStore.getState().user.id) },
+    });
   } catch (error) {
     console.error("로그인 실패 ❌", error);
     Alert.alert("카카오 로그인 실패", String(error));

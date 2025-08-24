@@ -16,7 +16,7 @@ const MypageBody = () => {
         <Pressable onLongPress={() => setVisible(true)}>
           <Avatar width={65} />
         </Pressable>
-        <Text className="text-[20px] font-bold">{user.name}</Text>
+        <Text className="text-[20px] font-bold">{user.nickname}</Text>
       </View>
       <Text className="text-[#BFBFBF] text-[15px] py-4">구독</Text>
       <Pressable

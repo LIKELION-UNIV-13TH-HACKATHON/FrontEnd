@@ -1,23 +1,52 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import ColorBell from "@/assets/images/colorbell.svg";
-const list = ["1", "2", "3", "4", "5", "6", "7"] as const;
+import { getSale } from "@/util/api/customer/getShopDetail";
+import { useLocalSearchParams } from "expo-router";
+import { timeAgo } from "@/util/calculate/time";
+
+type ResType = {
+  shopId: number;
+  shopName: string;
+  message: string;
+  sentAt: number;
+};
 
 const Sale = () => {
+  const { id } = useLocalSearchParams();
+  const [list, setList] = useState<ResType[]>([]);
+
+  const fetchSale = useCallback(async () => {
+    try {
+      if (!id) return;
+      const res = await getSale(Number(id));
+      setList(res.responses as ResType[]);
+    } catch (error) {
+      console.error("getSale 실패", error);
+      setList([]);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    // fetchSale();
+  }, [fetchSale]);
+
   return (
     <View>
-      {list.map((item) => (
+      {list.map((item, idx) => (
         <View
-          key={item}
+          key={`${item.shopId}
+          }`}
           className="flex-row w-full h-28 border-b justify-center p-6 gap-2 border-[#EDEDED]"
         >
           <ColorBell />
-          <View className="flex-col items-start space-y-2">
-            <Text className=" overflow-hidden text-gray2">
-              오늘만! 싱그러운 제철 자두, 30% 할인 중 🍑 방문하시면 특별
-              서비스까지 드려요!
+          <View className="flex-col items-start space-y-2 flex-1">
+            <Text numberOfLines={2} className="overflow-hidden text-gray2">
+              {item.message}
             </Text>
-            <Text className="text-gray1 text-[13px]">23분전</Text>
+            <Text className="text-gray1 text-[13px]">
+              {timeAgo(item.sentAt)}
+            </Text>
           </View>
         </View>
       ))}

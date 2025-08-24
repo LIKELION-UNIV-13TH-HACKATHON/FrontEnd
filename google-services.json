@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1098546109866",
+    "project_id": "dding-dong-c074f",
+    "storage_bucket": "dding-dong-c074f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098546109866:android:86a74c7c98816807001fd3",
+        "android_client_info": {
+          "package_name": "com.dding.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzHQwFNYBPsF-qxJyAHvJHpV_UuN4yJpM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
