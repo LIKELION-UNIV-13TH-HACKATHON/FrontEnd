@@ -1,4 +1,3 @@
-// util/api/customer/getShopInfo.ts
 import { http } from "../http";
 import { mapDetail, ShopDetail } from "../transform";
 
