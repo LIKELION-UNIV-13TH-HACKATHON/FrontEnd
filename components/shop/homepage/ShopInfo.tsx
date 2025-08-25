@@ -4,10 +4,19 @@ import VectorIcon from "../../../assets/images/vectoricon.svg";
 import Arrow from "../../../assets/images/droparrow.svg";
 import { useUserInfoStore } from "@/store/user/useUserInfoStore";
 import SwichModal from "@/components/common/SwichModal";
+import { getShopInfo } from "@/util/api/shop/getShopInfo";
 const ShopInfo = () => {
   const { user } = useUserInfoStore();
   const Avatar = user.avatar;
   const [visible, setVisible] = useState(false);
+
+  React.useEffect(() => {
+    const fetchInfo = async () => {
+      await getShopInfo();
+    };
+    fetchInfo();
+  }, []);
+
   return (
     <View className=" flex-row p-4 space-x-4">
       <Pressable onLongPress={() => setVisible(true)}>
@@ -15,14 +24,12 @@ const ShopInfo = () => {
       </Pressable>
       <View className=" flex-1 justify-center">
         <View className="flex-row items-center space-x-2">
-          <Text className=" font-bold text-lg">현씨네 과일가게</Text>
+          <Text className=" font-bold text-lg">{user.shopName}</Text>
           <Arrow />
         </View>
         <View className=" flex-row space-x-1 items-center">
           <VectorIcon />
-          <Text className=" text-xs text-[#9E9E9E]">
-            충청남도 천안시 동남구 사직동
-          </Text>
+          <Text className=" text-xs text-[#9E9E9E]">{user.address}</Text>
         </View>
       </View>
       <SwichModal

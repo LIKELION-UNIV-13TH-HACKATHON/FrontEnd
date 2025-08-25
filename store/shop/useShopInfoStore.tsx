@@ -31,7 +31,7 @@ export type Shop = ShopListItem & ShopExtra;
 type StoreState = {
   shops: Shop[];
   setShop: (shops: Shop[]) => void;
-  getShopDetail: (id: number) => Shop | undefined;
+  getShopDetail: (id?: number) => Shop | undefined;
   updateShop: (id: number, updated: Partial<Shop>) => void;
 };
 

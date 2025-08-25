@@ -50,7 +50,7 @@ const ProductBody = () => {
   const { products, setProduct, removeProduct } = useProductStore();
   useEffect(() => {
     if (!products || products.length === 0) {
-      setProduct(data);
+      setProduct([]);
     }
   }, [products?.length, setProduct]);
   return (
@@ -87,8 +87,6 @@ const ProductBody = () => {
               onPress={() => {
                 removeProduct(product.id);
                 setActive(null);
-
-                //todo: 백엔드 삭제 로직 추가
               }}
               className="px-4 py-2"
             >

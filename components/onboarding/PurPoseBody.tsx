@@ -1,5 +1,5 @@
 import { View, Text, Pressable } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CustomerIcon from "@/assets/images/customericon.svg";
 import ShopIcon from "@/assets/images/shopicon.svg";
 import NextButton from "../NextButton";
@@ -8,11 +8,48 @@ import { useLocalSearchParams } from "expo-router";
 import EmptyCircle from "@/assets/images/emptyCircle.svg";
 import FilledCircle from "@/assets/images/filledCircle.svg";
 import { useUserInfoStore } from "@/store/user/useUserInfoStore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const PurPoseBody = () => {
   const [selected, setSelected] = useState<"판매자" | "소비자" | null>(null);
   const [active, setActive] = useState(false);
   const { userid } = useLocalSearchParams<{ userid: string }>();
+
+  const [localFlags, setLocalFlags] = useState<{
+    hasConsumer: boolean;
+    hasSeller: boolean;
+  }>({
+    hasConsumer: false,
+    hasSeller: false,
+  });
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadFlags = async () => {
+      try {
+        if (!userid) return;
+        const raw = await AsyncStorage.getItem(`roleFlags:${userid}`);
+        const parsed = raw ? JSON.parse(raw) : null;
+        if (!cancelled && parsed && typeof parsed === "object") {
+          setLocalFlags({
+            hasConsumer: !!parsed.hasConsumer,
+            hasSeller: !!parsed.hasSeller,
+          });
+        }
+      } catch (e) {}
+    };
+    loadFlags();
+    return () => {
+      cancelled = true;
+    };
+  }, [userid]);
+
+  const storeUser = useUserInfoStore.getState().user;
+  const hasConsumer =
+    (storeUser?.hasConsumer ?? false) || localFlags.hasConsumer;
+  // const hasSeller = (storeUser?.hasSeller ?? false) || localFlags.hasSeller;
+  const hasSeller = true; // 바꿔야댐
+
   return (
     <View className="flex-col px-4 justify-between flex-1">
       <View>
@@ -50,6 +87,11 @@ const PurPoseBody = () => {
             >
               매장 소식을{"\n"}손님에게 알리기
             </Text>
+            {hasSeller && (
+              <Text className="text-[11px] mt-1 text-[#FF8A0D]">
+                이미 판매자 계정 보유
+              </Text>
+            )}
           </Pressable>
 
           <Pressable
@@ -78,6 +120,11 @@ const PurPoseBody = () => {
             >
               가게 소식을{"\n"}빠르게 받아보기
             </Text>
+            {hasConsumer && (
+              <Text className="text-[11px] mt-1 text-[#FF8A0D]">
+                이미 소비자 계정 보유
+              </Text>
+            )}
           </Pressable>
         </View>
       </View>
@@ -86,19 +133,15 @@ const PurPoseBody = () => {
         active={active}
         onPress={() => {
           if (!selected) return;
-          const pathnameNewMember =
+          // 역할 보유 여부 기준으로 분기: 보유 → 해당 메인 / 미보유 → 해당 온보딩
+          const finalPath =
             selected === "소비자"
-              ? "/[userid]/onboarding/(customer)/writename"
+              ? hasConsumer
+                ? "/(home)/(kakaomap)/map"
+                : "/[userid]/onboarding/(customer)/writename"
+              : hasSeller
+              ? "/(home)/home_shop"
               : "/[userid]/onboarding/(shop)/writeinfo";
-
-          const pathnameOldMember =
-            selected === "소비자"
-              ? "/(home)/(kakaomap)/map"
-              : "/(home)/home_shop";
-
-          const finalPath = useUserInfoStore.getState().user.isNewMember
-            ? pathnameNewMember
-            : pathnameOldMember;
 
           router.push({
             pathname: finalPath,

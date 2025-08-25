@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { getIndustryLabel } from "@/store/shop/useShopInfoStore";
+import {
+  getIndustryLabel,
+  useShopInfoStore,
+} from "@/store/shop/useShopInfoStore";
 import { View, Text, Pressable, Animated } from "react-native";
 import BannerIcon from "../../assets/images/bannericon.svg";
 import { router } from "expo-router";
@@ -31,7 +34,7 @@ function BottomSheet(props: BottomSheetProps) {
   const data = props.data;
   const onClose = props.onClose;
   const height = props.height ?? 370;
-  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState<boolean | undefined>(false);
   const [alarm, setAlarm] = useState<any | null>(null);
 
   useEffect(() => {
@@ -40,6 +43,10 @@ function BottomSheet(props: BottomSheetProps) {
       try {
         if (!open || !data?.id) return;
         const res = await getRecentAlarm(data.id);
+        setIsSubscribed(
+          useShopInfoStore.getState().getShopDetail(data.id)?.isSubscribe
+        );
+
         if (!cancelled) setAlarm(res ?? null);
       } catch (e) {
         if (!cancelled) setAlarm(null);
@@ -50,6 +57,7 @@ function BottomSheet(props: BottomSheetProps) {
       cancelled = true;
     };
   }, [open, data?.id]);
+
   return open ? (
     <>
       <Animated.View
@@ -79,9 +87,11 @@ function BottomSheet(props: BottomSheetProps) {
                   {data?.name ?? "상세 정보"}
                 </Text>
               </Pressable>
+
               <SubscribeButton
                 isSubscribed={isSubscribed}
                 onToggle={() => setIsSubscribed((prev) => !prev)}
+                id={data?.id}
               />
             </View>
 

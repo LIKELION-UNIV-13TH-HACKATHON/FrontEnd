@@ -13,7 +13,9 @@ const RecommendItem = ({
       className="rounded-lg bg-[#F9F9F9] py-6 px-4 my-1.5"
       onPress={() => updateAlarm({ contents: item.text })}
     >
-      <Text className="text-[16px] w-[90%]">{item.text}</Text>
+      <Text className="text-[16px] w-[90%] text-[#222]" numberOfLines={3}>
+        {item.text}
+      </Text>
     </Pressable>
   );
 };

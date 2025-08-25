@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { View, Text, ScrollView, Pressable, Image, Modal } from "react-native";
 import { useShopDraftStore } from "@/store/shop/useShopDraftStore";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import FilledCircle from "@/assets/images/filledCircle.svg";
 import EmptyCircle from "@/assets/images/emptyCircle.svg";
 import Vector from "@/assets/images/Vector.svg";
@@ -9,6 +9,7 @@ import Phone from "@/assets/images/phonenumbericon.svg";
 import Time from "@/assets/images/timeicon.svg";
 import DropIcon from "@/assets/images/minidroparrow.svg";
 import UpIcon from "@/assets/images/uparrowicon.svg";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DAYS: Array<"월" | "화" | "수" | "목" | "금" | "토" | "일"> = [
   "월",
@@ -31,19 +32,19 @@ const INDUSTRY_ORDER = [
 
 type IndustryKorean = (typeof INDUSTRY_ORDER)[number];
 
-const industryToLabel = (v?: string): IndustryKorean | string => {
-  if (!v) return "기타";
-  const codeMap: Record<string, IndustryKorean> = {
-    agri: "농수축산물",
-    food: "식료품",
-    daily: "생활잡화",
-    fashion: "의류/패션",
-    health: "건강/미용",
-    etc: "기타",
-  };
-  if (v in codeMap) return codeMap[v as keyof typeof codeMap];
-  if (INDUSTRY_ORDER.includes(v as IndustryKorean)) return v as IndustryKorean;
-  return "기타";
+// 서버 enum → 한글 라벨 매핑
+const SHOPTYPE_TO_KO: Record<string, IndustryKorean> = {
+  AGRI_FISH_LIVESTOCK: "농수축산물",
+  FOOD: "식료품",
+  DAILY_SUPPLIES: "생활잡화",
+  FASHION: "의류/패션",
+  HEALTH_BEAUTY: "건강/미용",
+  ETC: "기타",
+};
+
+const shopTypeToLabel = (code?: string): IndustryKorean => {
+  if (!code) return "기타";
+  return SHOPTYPE_TO_KO[code] ?? "기타";
 };
 
 const FinalCheckBody: React.FC = () => {
@@ -53,14 +54,30 @@ const FinalCheckBody: React.FC = () => {
 
   const noDraft = !draft;
 
+  const dayToKo: Record<string, (typeof DAYS)[number]> = {
+    MONDAY: "월",
+    TUESDAY: "화",
+    WEDNESDAY: "수",
+    THURSDAY: "목",
+    FRIDAY: "금",
+    SATURDAY: "토",
+    SUNDAY: "일",
+  };
+
   const hoursMap = useMemo(() => {
     const m = new Map<string, { open: string; close: string }>();
-    draft?.hours.forEach((h) => m.set(h.day, { open: h.open, close: h.close }));
+    const ops = draft?.request?.operationTimes ?? [];
+    ops.forEach((o) => {
+      const ko = dayToKo[o.dayOfWeek];
+      if (!ko) return;
+      if (o.isClosed) return; // 휴무는 표기 시 "휴무"
+      m.set(ko, { open: o.openTime, close: o.closeTime });
+    });
     return m;
-  }, [draft?.hours]);
+  }, [draft?.request?.operationTimes]);
 
   const monday = hoursMap.get("월");
-
+  const { userid } = useLocalSearchParams();
   return (
     <View className="flex-1 px-4 bg-white">
       {/* progress dots */}
@@ -109,10 +126,11 @@ const FinalCheckBody: React.FC = () => {
               <View className="bg-white px-5 py-4">
                 {/* 제목/부제 */}
                 <Text className="text-xl font-bold" numberOfLines={1}>
-                  {draft?.shopName}
+                  {draft?.request?.shopName}
                 </Text>
                 <Text className="mt-1 text-gray-400" numberOfLines={1}>
-                  {industryToLabel(draft?.industry)} · {draft?.address}
+                  {shopTypeToLabel(draft?.request?.shopType)} ·{" "}
+                  {draft?.request?.address}
                 </Text>
 
                 {/* 이미지 가로 스와이프 */}
@@ -122,19 +140,32 @@ const FinalCheckBody: React.FC = () => {
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={{ paddingRight: 8 }}
                   >
-                    {draft?.images.map((u, i) => (
-                      <Image
-                        key={`img-${i}`}
-                        source={{ uri: u }}
-                        resizeMode="cover"
-                        style={{
-                          width: 160,
-                          height: 160,
-                          borderRadius: 12,
-                          marginRight: 12,
-                        }}
-                      />
-                    ))}
+                    {(() => {
+                      const list: string[] = [];
+                      const toUri = (f: any) =>
+                        typeof f === "string" ? f : f?.uri;
+                      if (draft?.mainImage) {
+                        const u = toUri(draft.mainImage);
+                        if (u) list.push(u);
+                      }
+                      (draft?.imageFiles ?? []).forEach((f) => {
+                        const u = toUri(f);
+                        if (u) list.push(u);
+                      });
+                      return list.map((u, i) => (
+                        <Image
+                          key={`img-${i}`}
+                          source={{ uri: u }}
+                          resizeMode="cover"
+                          style={{
+                            width: 160,
+                            height: 160,
+                            borderRadius: 12,
+                            marginRight: 12,
+                          }}
+                        />
+                      ));
+                    })()}
                   </ScrollView>
                 </View>
 
@@ -194,14 +225,14 @@ const FinalCheckBody: React.FC = () => {
                   <View className="flex-row gap-2 items-center">
                     <Vector />
                     <Text className="text-[#9E9E9E]" numberOfLines={1}>
-                      {draft?.address}
+                      {draft?.request?.address}
                     </Text>
                   </View>
-                  {!!draft?.phone && (
+                  {!!draft?.request?.shopPhoneNumber && (
                     <View className="flex-row gap-2 items-center">
                       <Phone />
                       <Text className="text-[#7D7D7D]" numberOfLines={1}>
-                        {draft?.phone}
+                        {draft?.request?.shopPhoneNumber}
                       </Text>
                     </View>
                   )}
@@ -210,8 +241,12 @@ const FinalCheckBody: React.FC = () => {
 
               <View className="flex-row gap-3 px-4 pb-2">
                 <Pressable
-                  onPress={() => {
+                  onPress={async () => {
                     setVisible(false);
+                    await AsyncStorage.mergeItem(
+                      `roleFlags:${userid}`,
+                      JSON.stringify({ hasSeller: true })
+                    );
                     router.back();
                   }}
                   className="flex-1 h-12 rounded-xl bg-gray-100 items-center justify-center"
@@ -220,7 +255,6 @@ const FinalCheckBody: React.FC = () => {
                 </Pressable>
                 <Pressable
                   onPress={() => {
-                    // TODO: 서버 전송 로직 연결
                     setVisible(false);
                     router.replace("/(home)/home_shop");
                     setTimeout(() => clearDraft(), 0);

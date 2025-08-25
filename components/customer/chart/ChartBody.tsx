@@ -1,6 +1,5 @@
 import { View, Text, Pressable, ScrollView } from "react-native";
 import React, { useState } from "react";
-import { useShopInfoStore } from "@/store/shop/useShopInfoStore";
 import ChartItem from "./ChartItemList";
 
 const TABS = ["최신순", "거리순", "구독순"] as const;
@@ -8,11 +7,7 @@ type Tab = (typeof TABS)[number];
 const ChartBody = () => {
   const [tab, setTab] = useState<Tab>("최신순");
   return (
-    <ScrollView
-      className="flex-1"
-      contentContainerStyle={{ paddingBottom: 40 }}
-      stickyHeaderIndices={[1]}
-    >
+    <View className="flex-1">
       <View className="px-4 pt-2 mb-4 w-full bg-white" style={{ zIndex: 1 }}>
         <View className="flex-row gap-x-1.5">
           {TABS.map((t) => (
@@ -35,7 +30,7 @@ const ChartBody = () => {
         {tab === "구독순" && <ChartItem tab={"popular"} />}
         {tab === "거리순" && <ChartItem tab={"near"} />}
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

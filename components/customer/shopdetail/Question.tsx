@@ -114,7 +114,7 @@ const Question: React.FC<Props> = ({ data }) => {
   const list = useMemo(() => {
     if (data && data.length) return data;
     if (qas && qas.length) return qas;
-    return defaultData; // fallback
+    return []; // fallback
   }, [data, qas]);
 
   return (

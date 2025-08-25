@@ -9,7 +9,7 @@ import {
   Image,
   Alert,
 } from "react-native";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import FilledCircle from "@/assets/images/filledCircle.svg";
 import EmptyCircle from "@/assets/images/emptyCircle.svg";
 import Postcode from "@actbase/react-daum-postcode";
@@ -22,14 +22,15 @@ import HoursForm, { HoursValue, HoursDayKey } from "./HoursForm";
 import NextButton from "@/components/NextButton";
 import { router, useLocalSearchParams } from "expo-router";
 import { useShopDraftStore } from "@/store/shop/useShopDraftStore";
+import { sendShopInfo } from "@/util/api/shop/sendShopInfo";
 
 const ListData = [
-  { label: "농수축산물", value: "agricultural" },
-  { label: "식료품", value: "food" },
-  { label: "생활잡화", value: "grocery" },
-  { label: "의류/패션", value: "fashion" },
-  { label: "건강/미용", value: "healthy" },
-  { label: "기타", value: "etc" },
+  { label: "농수축산물", value: "AGRI_FISH_LIVESTOCK" },
+  { label: "식료품", value: "FOOD" },
+  { label: "생활잡화", value: "DAILY_SUPPLIES" },
+  { label: "의류/패션", value: "FASHION" },
+  { label: "건강/미용", value: "HEALTH_BEAUTY" },
+  { label: "기타", value: "ETC" },
 ];
 
 const WriteInfoBody = () => {
@@ -93,37 +94,116 @@ const WriteInfoBody = () => {
     return nameOk && !!industry && !!address && images.length >= 1 && hasHours;
   }, [shopName, industry, address, images.length, hours]);
 
-  // 폼 객체 생성(서버엔 나중에 사용)
   const toHHmm = (d: Date) =>
     `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(
       2,
       "0"
     )}`;
+
+  const dayKoToApi: Record<string, string> = {
+    월: "MONDAY",
+    화: "TUESDAY",
+    수: "WEDNESDAY",
+    목: "THURSDAY",
+    금: "FRIDAY",
+    토: "SATURDAY",
+    일: "SUNDAY",
+    MONDAY: "MONDAY",
+    TUESDAY: "TUESDAY",
+    WEDNESDAY: "WEDNESDAY",
+    THURSDAY: "THURSDAY",
+    FRIDAY: "FRIDAY",
+    SATURDAY: "SATURDAY",
+    SUNDAY: "SUNDAY",
+  };
+
+  // 폼 변경 시점마다 드래프트를 스토어에 동기화
+  useEffect(() => {
+    const draft = buildFormData();
+    setDraft(draft);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    shopName,
+    ownerName,
+    businessNo,
+    phone,
+    address,
+    industry,
+    images,
+    hours,
+  ]);
+
   const buildFormData = () => {
-    const hoursPayload = hours.days.map((day) => {
-      const t = hours.times[day as HoursDayKey]!;
-      return { day, open: toHHmm(t.open), close: toHHmm(t.close) };
+    const apiDays = [
+      "MONDAY",
+      "TUESDAY",
+      "WEDNESDAY",
+      "THURSDAY",
+      "FRIDAY",
+      "SATURDAY",
+      "SUNDAY",
+    ] as const;
+
+    const apiToKo: Record<string, string> = {
+      MONDAY: "월",
+      TUESDAY: "화",
+      WEDNESDAY: "수",
+      THURSDAY: "목",
+      FRIDAY: "금",
+      SATURDAY: "토",
+      SUNDAY: "일",
+    };
+
+    const operationTimes = apiDays.map((apiDay) => {
+      const ko = apiToKo[apiDay];
+      const t = hours.times[ko as HoursDayKey];
+      if (t && t.open && t.close) {
+        return {
+          dayOfWeek: apiDay as any,
+          openTime: toHHmm(t.open),
+          closeTime: toHHmm(t.close),
+          isClosed: false,
+        };
+      }
+      // 비입력 요일은 휴무 처리 (스키마상 open/close 필요하므로 00:00 세팅)
+      return {
+        dayOfWeek: apiDay as any,
+        openTime: "00:00",
+        closeTime: "00:00",
+        isClosed: true,
+      };
     });
+
     return {
-      shopName: shopName.trim(),
-      ownerName: ownerName.trim(),
-      businessNo: businessNo.trim(),
-      phone: phone.trim(),
-      industry,
-      address: address.trim(),
-      images: images.map((i) => i.uri),
-      hours: hoursPayload,
+      request: {
+        businessNumber: businessNo.trim(),
+        ownerName: ownerName.trim(),
+        shopName: shopName.trim(),
+        shopType: industry as any,
+        shopPhoneNumber: phone.trim(),
+        address: address.trim(),
+        isTermAgreed: true,
+        operationTimes,
+      },
+      // 첫 장은 대표, 나머지는 일반 이미지로 전송
+      mainImage: images[0]?.uri,
+      imageFiles: images.slice(1).map((i) => i.uri),
     };
   };
   const { userid } = useLocalSearchParams<{ userid: string }>();
 
-  const handleNext = () => {
-    const form = buildFormData();
-    setDraft(form);
-    router.push({
-      pathname: "/[userid]/onboarding/(shop)/finalcheck",
-      params: { userid: String(userid) },
-    });
+  const handleNext = async () => {
+    try {
+      const form = buildFormData();
+      await sendShopInfo(form);
+      router.push({
+        pathname: "/[userid]/onboarding/(shop)/finalcheck",
+        params: { userid: String(userid) },
+      });
+    } catch (e) {
+      Alert.alert("매장 등록 실패", "다시 시도해주세요.");
+      console.error("sendShopInfo failed", e);
+    }
   };
 
   return (
