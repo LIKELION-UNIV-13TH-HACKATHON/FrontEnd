@@ -10,12 +10,16 @@ export type User = {
   shopName: string | null;
   nickname: string | null;
   bookMark: Shop[] | null;
-  shopMember: boolean;
-  customerMember: boolean;
+  hasSeller: boolean;
+  hasConsumer: boolean;
   agree: boolean;
   avatar: SvgAvatarComponent;
   mainImage: string;
   isNewMember: boolean;
+  address: string;
+  shopId: number;
+  shoplat: number;
+  shoplong: number;
 };
 
 export type StoreState = {
@@ -31,12 +35,16 @@ export const useUserInfoStore = create<StoreState>((set, get) => ({
     shopName: null,
     nickname: null,
     bookMark: null,
-    shopMember: false,
-    customerMember: false,
+    hasSeller: false,
+    hasConsumer: false,
     agree: false,
     avatar: UserIcon,
     mainImage: "",
     isNewMember: false,
+    address: "",
+    shopId: 0,
+    shoplat: 0,
+    shoplong: 0,
   },
   setUser: (user) => set((state) => ({ user: { ...state.user, ...user } })),
   getUserInfo: () => get().user,

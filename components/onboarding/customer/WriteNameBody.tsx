@@ -19,6 +19,7 @@ const WriteNameBody = () => {
   const [nickname, setNickName] = useState("");
   const [isChecking, setIsChecking] = useState(false);
   const [error, setError] = useState<null | boolean>(null);
+  const { user } = useUserInfoStore();
 
   const isValidLength = (text: string) =>
     text.trim().length >= 2 && text.trim().length <= 10;
@@ -102,7 +103,7 @@ const WriteNameBody = () => {
       <NextButton
         active={active}
         onPress={async () => {
-          await createUser(nickname);
+          await createUser(nickname, String(user.id));
           useUserInfoStore.getState().setUser({
             nickname: nickname,
           });
